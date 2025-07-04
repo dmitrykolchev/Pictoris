@@ -3,9 +3,9 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using Managed.Win32.Base;
 using Managed.Win32.Graphics.Imaging;
 using ComApi = Managed.Win32.ComOle.Methods;
-using WicApi = Managed.Win32.Graphics.Imaging.Methods;
 
 namespace Managed.Graphics.Wic;
 
@@ -17,6 +17,15 @@ public unsafe class WicImagingFactory : WicImagingFactory<IWICImagingFactory>, I
 
     public static WicImagingFactory CreateFactory()
     {
-        ComApi.CoCreateInstance(Guids.CLSID_WICImagingFactory, null, CLSCTX_INPROC_SERVER)
+        var guid = Guids.CLSID_WICImagingFactory;
+
+        IWICImagingFactory* factory;
+        CheckResult(ComApi.CoCreateInstance(
+            &guid,
+            null,
+            (uint)CLSCTX.CLSCTX_INPROC_SERVER,
+            __uuidof<IWICImagingFactory>(),
+            (void**)&factory));
+        return new WicImagingFactory(factory);
     }
 }

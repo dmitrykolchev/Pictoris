@@ -125,7 +125,7 @@ internal class Program
     private static void GenerateBase()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -152,7 +152,7 @@ internal class Program
     private static void GenerateCommon()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -179,7 +179,7 @@ internal class Program
     private static void GenerateOle()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -211,7 +211,7 @@ internal class Program
     private static void GenerateUrlmon()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -236,7 +236,7 @@ internal class Program
     private static void GenerateMsxml()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -261,7 +261,7 @@ internal class Program
     private static void GenerateXps()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -286,7 +286,7 @@ internal class Program
     private static void GenerateUser32()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -311,7 +311,7 @@ internal class Program
     private static void GenerateGdi()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -336,7 +336,7 @@ internal class Program
     private static void GenerateDirect2d()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -370,7 +370,7 @@ internal class Program
     private static void GenerateDirect3d()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -396,7 +396,7 @@ internal class Program
     private static void GenerateDirectWrite()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -424,7 +424,7 @@ internal class Program
     private static void GenerateImaging()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",
@@ -450,7 +450,7 @@ internal class Program
     private static void GenerateDxgi()
     {
         string[] files = [
-                @"C:\Projects\2025\DIrectXUnsafeGenerator\ClangUnsafeGenerator\Direct2d.c"
+                @"C:\Projects\2025\DIrectXUnsafeGenerator\src\ClangUnsafeGenerator\Direct2d.c"
             ];
         PInvokeGeneratorConfiguration configuration = new(
             "c++",

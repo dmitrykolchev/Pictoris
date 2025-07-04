@@ -647,7 +647,7 @@ namespace Managed.Win32.Base
         MEMCTX_SAME = -2,
     }
 
-    public enum tagCLSCTX
+    public enum CLSCTX
     {
         CLSCTX_INPROC_SERVER = 0x1,
         CLSCTX_INPROC_HANDLER = 0x2,

@@ -4,15 +4,31 @@
 // </copyright>
 
 using Managed.Graphics.Direct2d;
+using Managed.Win32.Base;
 using Managed.Win32.Graphics.Direct2d;
 using Managed.Win32.Graphics.Imaging;
+using ComApi = Managed.Win32.ComOle.Methods;
 
 namespace Managed.Graphics.Wic;
 
 public unsafe class WicImagingFactory2 : WicImagingFactory<IWICImagingFactory2>
 {
-    internal WicImagingFactory2(IWICImagingFactory* imagingFactory) : base(imagingFactory)
+    internal WicImagingFactory2(IWICImagingFactory2* imagingFactory) : base(imagingFactory)
     {
+    }
+
+    public static WicImagingFactory2 CreateFactory()
+    {
+        var guid = Guids.CLSID_WICImagingFactory2;
+
+        IWICImagingFactory2* factory;
+        CheckResult(ComApi.CoCreateInstance(
+            &guid,
+            null,
+            (uint)CLSCTX.CLSCTX_INPROC_SERVER,
+            __uuidof<IWICImagingFactory2>(),
+            (void**)&factory));
+        return new WicImagingFactory2(factory);
     }
 
     //[return: NativeTypeName("HRESULT")]

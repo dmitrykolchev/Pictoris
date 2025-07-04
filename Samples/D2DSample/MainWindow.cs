@@ -6,6 +6,7 @@
 using System.Runtime.Intrinsics;
 using Managed.Graphics;
 using Managed.Graphics.Direct2d;
+using Managed.Graphics.Wic;
 using Dxgi = Managed.Graphics.Dxgi;
 
 namespace D2DSample;
@@ -188,6 +189,9 @@ public partial class MainWindow : Form
         {
             _dxgiDevice.Dispose();
         }
+        
+        using WicImagingFactory2 wicFactory = WicImagingFactory2.CreateFactory();
+
         _dxgiDevice = Dxgi.Device.CreateDevice();
         _factory = Direct2dFactory1.CreateFactory(
             FactoryType.SingleThreaded);

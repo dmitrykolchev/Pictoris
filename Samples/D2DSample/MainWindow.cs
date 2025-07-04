@@ -21,6 +21,9 @@ public partial class MainWindow : Form
     private Bitmap1? _bitmap;
     private SolidColorBrush? _brush;
 
+    private BitmapF? _gradient;
+    private Managed.Graphics.Direct2d.Bitmap _gradientBitmap;
+
     private float _time;
     private float _baseHue;
 
@@ -32,7 +35,32 @@ public partial class MainWindow : Form
         Load += MainWindow_Load;
         FormClosed += MainWindow_FormClosed;
         InitializeComponent();
+        CreateGradient();
     }
+
+    private void CreateGradient()
+    {
+        if (_deviceContext != null && _gradientBitmap == null)
+        {
+            BitmapF bitmap = BitmapF.CreateBitmap(256, 256);
+            var r = bitmap.GetChannel(BitmapChannel.Red);
+            var g = bitmap.GetChannel(BitmapChannel.Green);
+            var b = bitmap.GetChannel(BitmapChannel.Blue);
+            var a = bitmap.GetChannel(BitmapChannel.Alpha);
+            for (int i = 0; i < bitmap.Width * bitmap.Height; ++i)
+            {
+                r[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
+                g[i] = 0;
+                b[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
+                a[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
+            }
+            byte[] buffer = new byte[bitmap.Width * bitmap.Height * 4];
+            BitmapF.AssembleBGRA(buffer, r, g, b, a, bitmap.Width, bitmap.Height);
+            _gradientBitmap = BitmapF.CreateBitmapFromRawData(_deviceContext, buffer, bitmap.Width, bitmap.Height);
+            _gradient = bitmap;
+        }
+    }
+
 
     private void MainWindow_FormClosed(object? sender, FormClosedEventArgs e)
     {
@@ -66,14 +94,14 @@ public partial class MainWindow : Form
     }
     protected override void OnMouseDown(MouseEventArgs e)
     {
-        if (e.Button == MouseButtons.Right)
-        {
-            timer1.Enabled = !timer1.Enabled;
-        }
-        else
-        {
-            Close();
-        }
+        //if (e.Button == MouseButtons.Right)
+        //{
+        //    timer1.Enabled = !timer1.Enabled;
+        //}
+        //else
+        //{
+        //    Close();
+        //}
 
         base.OnMouseDown(e);
     }
@@ -96,25 +124,39 @@ public partial class MainWindow : Form
 
         renderTarget.BeginDraw();
 
-        var copy = _task == null
-            ? []
-            : _task.Result;
+        renderTarget.Clear(ColorF.FromKnown(KnownColors.Black));
 
-        _task = CreateGeometries(_time);
+        CreateGradient();
+        var dstSize = renderTarget.Size;
+        var bmpSize = _gradientBitmap.Size;
 
-        if (_time == 0.1f)
-        {
-            renderTarget.Clear(ColorF.FromKnown(KnownColors.Black, 1f));
-        }
+        renderTarget.DrawBitmap(_gradientBitmap,
+              new RectF(
+                  (dstSize.Width - bmpSize.Width) / 2,
+                  (dstSize.Height - bmpSize.Height) / 2,
+                  bmpSize.Width,
+                  bmpSize.Height));
 
-        renderTarget.FillRectangle(new RectF(0, 0, ClientSize.Width, ClientSize.Height), _brush!);
-        for (var index = 0; index < copy.Count; ++index)
-        {
-            var tuple = copy[index];
-            using var geometry = tuple.Item1;
-            using var brush = renderTarget.CreateSolidColorBrush(tuple.Item2.AdjustContrast(1.5f));
-            renderTarget.DrawGeometry(geometry, brush, 0.1f);
-        }
+
+        //var copy = _task == null
+        //    ? []
+        //    : _task.Result;
+
+        //_task = CreateGeometries(_time);
+
+        //if (_time == 0.1f)
+        //{
+        //    renderTarget.Clear(ColorF.FromKnown(KnownColors.Black, 1f));
+        //}
+
+        //renderTarget.FillRectangle(new RectF(0, 0, ClientSize.Width, ClientSize.Height), _brush!);
+        //for (var index = 0; index < copy.Count; ++index)
+        //{
+        //    var tuple = copy[index];
+        //    using var geometry = tuple.Item1;
+        //    using var brush = renderTarget.CreateSolidColorBrush(tuple.Item2.AdjustContrast(1.5f));
+        //    renderTarget.DrawGeometry(geometry, brush, 0.1f);
+        //}
         renderTarget.EndDraw();
         _swapChain!.Present(1, 0);
         _time += 0.001f;

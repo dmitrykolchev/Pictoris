@@ -44,10 +44,8 @@ partial class MainWindow
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = Color.Black;
         ClientSize = new Size(1154, 603);
-        FormBorderStyle = FormBorderStyle.None;
         Name = "MainWindow";
         ShowIcon = false;
-        WindowState = FormWindowState.Maximized;
         ResumeLayout(false);
     }
 

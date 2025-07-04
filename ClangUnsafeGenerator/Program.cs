@@ -84,6 +84,7 @@ internal class Program
         ["_LUID"] = "LUID",
         ["__AnonymousEnum_d2d1_L89_C1"] = "D2D1_INTERPOLATION_MODE_DEFINITION",
         ["MachineGlobalObjectTableRegistrationToken__"] = "MachineGlobalObjectTableRegistrationToken",
+        ["tagCLSCTX"] = "CLSCTX"
     };
 
     private static readonly string[] _excluded = ["_LUID", "_GDI_NONREMOTE", "_userHGLOBAL", "_userHMETAFILE",
@@ -130,7 +131,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Base",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Base\\Base.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Base\\Base.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -157,7 +158,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Common",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Common\\Common.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Common\\Common.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -184,7 +185,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.ComOle",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\ComOle\\ComOle.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\ComOle\\ComOle.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -216,7 +217,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Urlmon",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Urlmon\\Urlmon.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Urlmon\\Urlmon.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -241,7 +242,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Msxml",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Msxml\\Msxml.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Msxml\\Msxml.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -266,7 +267,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Xps",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Xps\\Xps.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Xps\\Xps.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -291,7 +292,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.User32",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\User32\\User32.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\User32\\User32.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -316,7 +317,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Graphics.Gdi",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Graphics\\Gdi\\Gdi.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Graphics\\Gdi\\Gdi.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -341,7 +342,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Graphics.Direct2d",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Graphics\\Direct2d\\Direct2d.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Graphics\\Direct2d\\Direct2d.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -375,7 +376,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Graphics.Direct3d",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Graphics\\Direct3d\\Direct3d.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Graphics\\Direct3d\\Direct3d.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -401,7 +402,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Graphics.DirectWrite",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Graphics\\DirectWrite\\DirectWrite.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Graphics\\DirectWrite\\DirectWrite.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -429,7 +430,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Graphics.Imaging",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Graphics\\Imaging\\Imaging.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Graphics\\Imaging\\Imaging.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)
@@ -455,7 +456,7 @@ internal class Program
             "c++",
             "c++17",
             "Managed.Win32.Graphics.Dxgi",
-            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\Managed.Win32\\Win32\\Graphics\\Dxgi\\Dxgi.cs",
+            "C:\\Projects\\2025\\DirectXUnsafeGenerator\\src\\Managed.Win32\\Win32\\Graphics\\Dxgi\\Dxgi.cs",
             "",
             PInvokeGeneratorOutputMode.CSharp,
             _options)

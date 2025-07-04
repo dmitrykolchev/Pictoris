@@ -9,7 +9,7 @@ using Managed.Win32.Graphics.Direct2d;
 
 namespace Managed.Graphics.Direct2d;
 
-public unsafe class DeviceContext : RenderTarget<ID2D1DeviceContext>
+public unsafe class DeviceContext : RenderTarget<ID2D1DeviceContext>, IDeviceContext
 {
     internal DeviceContext(ID2D1DeviceContext* deviceContext) : base(deviceContext)
     {

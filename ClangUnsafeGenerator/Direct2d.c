@@ -50,5 +50,3 @@
 
 #include <d3d11.h>
 
-D2D_MATRIX_3X2_F m;
-

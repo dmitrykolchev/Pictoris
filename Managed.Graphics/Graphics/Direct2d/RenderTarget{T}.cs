@@ -4,9 +4,12 @@
 // </copyright>
 
 using System.Runtime.CompilerServices;
+using Managed.Com;
+using Managed.Graphics.Wic;
 using Managed.Win32;
 using Managed.Win32.Common;
 using Managed.Win32.Graphics.Direct2d;
+using Managed.Win32.Graphics.Imaging;
 
 namespace Managed.Graphics.Direct2d;
 
@@ -19,14 +22,14 @@ public unsafe class RenderTarget<T> : Resource<T>
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateBitmap([NativeTypeName("D2D1_SIZE_U")] D2D_SIZE_U size, [NativeTypeName("const void *")] void* srcData, [NativeTypeName("UINT32")] uint pitch, [NativeTypeName("const D2D1_BITMAP_PROPERTIES *")] D2D1_BITMAP_PROPERTIES* bitmapProperties, ID2D1Bitmap** bitmap);
-    public Bitmap CreateBitmap(in SizeU size, ReadOnlySpan<byte> srcData, uint pitch, in BitmapProperties bitmapProperties)
+    public Bitmap CreateBitmap(in SizeU size, ReadOnlySpan<byte> srcData, int pitch, in BitmapProperties bitmapProperties)
     {
         var pSize = (D2D_SIZE_U*)Unsafe.AsPointer(in size);
         var properties = (D2D1_BITMAP_PROPERTIES*)Unsafe.AsPointer(in bitmapProperties);
         fixed (void* data = srcData)
         {
             ID2D1Bitmap* bitmap;
-            CheckResult(Native->CreateBitmap(*pSize, data, unchecked(pitch), properties, &bitmap));
+            CheckResult(Native->CreateBitmap(*pSize, data, unchecked((uint)pitch), properties, &bitmap));
             return new Bitmap(bitmap);
         }
     }
@@ -34,9 +37,45 @@ public unsafe class RenderTarget<T> : Resource<T>
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateBitmapFromWicBitmap(IWICBitmapSource* wicBitmapSource, [NativeTypeName("const D2D1_BITMAP_PROPERTIES *")] D2D1_BITMAP_PROPERTIES* bitmapProperties, ID2D1Bitmap** bitmap);
+    public Bitmap CreateBitmapFromWicBitmap(IWicBitmapSource bitmapSource, in BitmapProperties bitmapProperties)
+    {
+        ID2D1Bitmap* bitmap;
+        CheckResult(Native->CreateBitmapFromWicBitmap(
+            (IWICBitmapSource*)bitmapSource.Native,
+            (D2D1_BITMAP_PROPERTIES*)Unsafe.AsPointer(in bitmapProperties),
+            &bitmap));
+        return new Bitmap(bitmap);
+    }
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateSharedBitmap([NativeTypeName("const IID &")] Guid* riid, void* data, [NativeTypeName("const D2D1_BITMAP_PROPERTIES *")] D2D1_BITMAP_PROPERTIES* bitmapProperties, ID2D1Bitmap** bitmap);
+    /// <summary>
+    /// Creates an ID2D1Bitmap whose data is shared with another resource.
+    /// </summary>
+    /// <param name="riid">The interface ID of the object supplying the source data.</param>
+    /// <param name="data">An ID2D1Bitmap, IDXGISurface, or an IWICBitmapLock that contains 
+    /// the data to share with the new ID2D1Bitmap. For more information, 
+    /// see the Remarks section.</param>
+    /// <param name="bitmapProperties">The pixel format and DPI of the bitmap to create . The DXGI_FORMAT 
+    /// portion of the pixel format must match the DXGI_FORMAT of data or the method will fail, but the 
+    /// alpha modes don't have to match. To prevent a mismatch, you can pass NULL or the value obtained 
+    /// from the D2D1::PixelFormat helper function. The DPI settings do not have to match those of data. 
+    /// If both dpiX and dpiY are 0.0f, the DPI of the render target is used.</param>
+    /// <returns>returns the new bitmap</returns>
+    /// <remarks>
+    /// The CreateSharedBitmap method is useful for efficiently reusing bitmap data and can also be 
+    /// used to provide interoperability with Direct3D.
+    /// </remarks>
+    public Bitmap CreateSharedBitmap(in Guid riid, IComObject data, in BitmapProperties bitmapProperties)
+    {
+        ID2D1Bitmap* bitmap;
+        CheckResult(Native->CreateSharedBitmap(
+            (Guid*)Unsafe.AsPointer(in riid),
+            data.Native.ToPointer(),
+            (D2D1_BITMAP_PROPERTIES*)Unsafe.AsPointer(in bitmapProperties),
+            &bitmap));
+        return new Bitmap(bitmap);
+    }
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateBitmapBrush(ID2D1Bitmap* bitmap, [NativeTypeName("const D2D1_BITMAP_BRUSH_PROPERTIES *")] D2D1_BITMAP_BRUSH_PROPERTIES* bitmapBrushProperties, [NativeTypeName("const D2D1_BRUSH_PROPERTIES *")] D2D1_BRUSH_PROPERTIES* brushProperties, ID2D1BitmapBrush** bitmapBrush);
@@ -420,6 +459,10 @@ public unsafe class RenderTarget<T> : Resource<T>
     //void PushAxisAlignedClip([NativeTypeName("const D2D1_RECT_F *")] D2D_RECT_F* clipRect, D2D1_ANTIALIAS_MODE antialiasMode);
 
     //void PopAxisAlignedClip();
+    public void PopAxisAlignedClip()
+    {
+        Native->PopAxisAlignedClip();
+    }
 
     //void Clear([NativeTypeName("const D2D1_COLOR_F *")] _D3DCOLORVALUE* clearColor = null);
     public void Clear(in ColorF clearColor)

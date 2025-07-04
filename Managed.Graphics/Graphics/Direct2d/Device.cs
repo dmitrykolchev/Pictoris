@@ -7,7 +7,7 @@ using Managed.Win32.Graphics.Direct2d;
 
 namespace Managed.Graphics.Direct2d;
 
-public unsafe class Device : Resource<ID2D1Device>
+public unsafe class Device : Resource<ID2D1Device>, IDevice
 {
     internal unsafe Device(ID2D1Device* device) : base(device)
     {

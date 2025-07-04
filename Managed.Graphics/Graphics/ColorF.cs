@@ -52,10 +52,21 @@ public struct ColorF
         return new ColorF(r, g, b, a);
     }
 
+    public static ColorF FromSRGB(float r, float g, float b, float a)
+    {
+        return FromSRGB(Vector128.Create<float>([r, g, b, a]));
+    }
+
+    public static ColorF FromSRGB(Vector128<float> srgb)
+    {
+        return new ColorF(XMath.SRGBToRGBImpl.SRGBToRGB(srgb));
+    }
+
     public static ColorF FromHSV(float h, float s, float v)
     {
         return FromHSV(Vector128.Create<float>([h, s, v, 1f]));
     }
+
     public static ColorF FromHSV(Vector128<float> hsv)
     {
         return new ColorF(XMath.HSVToRGB(hsv));
@@ -71,13 +82,48 @@ public struct ColorF
         return new ColorF(XMath.HSLToRGB(hsl));
     }
 
+    public static ColorF FromXYZ(float x, float y, float z, float a = 1f)
+    {
+        return FromXYZ(Vector128.Create<float>([x, y, z, a]));
+    }
+
+    public static ColorF FromXYZ(Vector128<float> xyz)
+    {
+        return new ColorF(XMath.XYZToRGBImpl.XYZToRGB(xyz));
+    }
+    public static ColorF FromYUV(float y, float u, float v, float a = 1f)
+    {
+        return FromYUV(Vector128.Create<float>([y, u, v, a]));
+    }
+
+    public static ColorF FromYUV(Vector128<float> yuv)
+    {
+        return new ColorF(XMath.YUVToRGBImpl.YUVToRGB(yuv));
+    }
+
+    public Vector128<float> ToSRGB()
+    {
+        return XMath.RGBToSRGBImpl.RGBToSRGB(AsVector());
+    }
+
     public Vector128<float> ToHSV()
     {
         return XMath.RGBToHSV(AsVector());
     }
+
     public Vector128<float> ToHSL()
     {
         return XMath.RGBToHSL(AsVector());
+    }
+
+    public Vector128<float> ToXYZ()
+    {
+        return XMath.RGBToXYZImpl.RGBToXYZ(AsVector());
+    }
+
+    public Vector128<float> ToYUV()
+    {
+        return XMath.RGBToYUVImpl.RGBToYUV(AsVector());
     }
 
     public ColorF AdjustContrast(float contrast)

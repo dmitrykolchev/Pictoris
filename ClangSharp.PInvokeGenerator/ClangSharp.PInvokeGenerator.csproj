@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>ClangSharp</RootNamespace>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- CA1303: Do not pass literals as localized parameters -->
+		<NoWarn>$(NoWarn);CA1303</NoWarn>
+		<OutputType>Library</OutputType>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ClangSharp" Version="20.1.2.1" />
+		<PackageReference Include="libclang.runtime.win-x64" Version="20.1.2" />
+		<PackageReference Include="libClangSharp.runtime.win-x64" Version="20.1.2" />
+	</ItemGroup>
+
+</Project>

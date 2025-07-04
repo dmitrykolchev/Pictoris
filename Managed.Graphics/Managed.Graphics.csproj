@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Managed</RootNamespace>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Managed.Win32\Managed.Win32.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="int">
+			<Alias>HRESULT</Alias>
+		</Using>
+		<Using Include="Managed.Com.ComUtils">
+		  <Static>True</Static>
+		</Using>
+		<Using Include="Managed.Graphics.DirectWrite">
+		  <Alias>DirectW</Alias>
+		</Using>
+		<Using Include="Managed.Graphics.Wic">
+		  <Alias>Wic</Alias>
+		</Using>
+	</ItemGroup>
+</Project>

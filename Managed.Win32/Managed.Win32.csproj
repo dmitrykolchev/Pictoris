@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<RootNamespace>Managed</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<NoWarn>1701;1702;8500</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<NoWarn>1701;1702;8500</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Using Include="Managed.Win32.Base" />
+		<Using Include="Managed.Win32.ComOle" />
+		<Using Include="Managed.Win32.Common" />
+		<Using Include="Managed.Win32.User32" />
+		<Using Include="Managed.Win32.Urlmon" />
+		<Using Include="Managed.Win32.Msxml" />
+		<Using Include="Managed.Win32.Xps" />
+		<Using Include="Managed.Win32.Graphics.Gdi" />
+		<Using Include="Managed.Win32.Graphics.Direct2d" />
+		<Using Include="Managed.Win32.Graphics.Direct3d" />
+		<Using Include="Managed.Win32.Graphics.DirectWrite" />
+		<Using Include="Managed.Win32.Graphics.Dxgi" />
+		<Using Include="Managed.Win32.Graphics.Imaging" />
+	</ItemGroup>
+
+</Project>

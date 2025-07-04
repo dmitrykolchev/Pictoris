@@ -2,7 +2,8 @@
 using System.Runtime.CompilerServices;
 
 namespace Managed.Graphics.Direct2d;
-public unsafe class RoundedRectangleGeometry : Geometry<ID2D1RoundedRectangleGeometry>
+public unsafe class RoundedRectangleGeometry : Geometry<ID2D1RoundedRectangleGeometry>,
+    IRoundedRectangleGeometry
 {
     public RoundedRectangleGeometry(ID2D1RoundedRectangleGeometry* geometry) : base(geometry)
     {

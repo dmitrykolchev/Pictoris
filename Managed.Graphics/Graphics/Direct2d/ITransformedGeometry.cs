@@ -7,4 +7,6 @@ namespace Managed.Graphics.Direct2d;
 
 public interface ITransformedGeometry : IGeometry
 {
+    Geometry GetSourceGeometry();
+    void GetTransform(out Matrix3x2F transform);
 }

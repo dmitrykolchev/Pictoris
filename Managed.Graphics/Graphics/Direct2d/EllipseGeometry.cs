@@ -8,7 +8,7 @@ using Managed.Win32.Graphics.Direct2d;
 
 namespace Managed.Graphics.Direct2d;
 
-public unsafe class EllipseGeometry : Geometry<ID2D1EllipseGeometry>
+public unsafe class EllipseGeometry : Geometry<ID2D1EllipseGeometry>, IEllipseGeometry
 {
     internal EllipseGeometry(ID2D1EllipseGeometry* geometry) : base(geometry)
     {

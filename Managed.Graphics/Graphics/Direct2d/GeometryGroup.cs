@@ -7,7 +7,7 @@ using Managed.Win32.Graphics.Direct2d;
 
 namespace Managed.Graphics.Direct2d;
 
-public unsafe class GeometryGroup : Geometry<ID2D1GeometryGroup>
+public unsafe class GeometryGroup : Geometry<ID2D1GeometryGroup>, IGeometryGroup
 {
     public GeometryGroup(ID2D1GeometryGroup* geometryGroup) : base(geometryGroup)
     {

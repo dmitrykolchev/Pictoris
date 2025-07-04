@@ -17,7 +17,6 @@ public unsafe class PathGeometry<T> : Geometry<T>
 
     //[return: NativeTypeName("HRESULT")]
     //int Open(ID2D1GeometrySink** geometrySink);
-
     public GeometrySink Open()
     {
         ID2D1GeometrySink* result;

@@ -9,7 +9,7 @@ using Managed.Win32.Graphics.Direct2d;
 
 namespace Managed.Graphics.Direct2d;
 
-public unsafe class TransformedGeometry : Geometry<ID2D1TransformedGeometry>
+public unsafe class TransformedGeometry : Geometry<ID2D1TransformedGeometry>, ITransformedGeometry
 {
     internal TransformedGeometry(ID2D1TransformedGeometry* transformedGeometry) : base(transformedGeometry)
     {

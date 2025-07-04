@@ -3,7 +3,8 @@ using Managed.Win32.Graphics.Direct2d;
 using System.Runtime.CompilerServices;
 
 namespace Managed.Graphics.Direct2d;
-public unsafe class RectangleGeometry : Geometry<ID2D1RectangleGeometry>
+
+public unsafe class RectangleGeometry : Geometry<ID2D1RectangleGeometry>, IRectangleGeometry
 {
     internal RectangleGeometry(ID2D1RectangleGeometry* geometry) : base(geometry)
     {

@@ -7,4 +7,8 @@ namespace Managed.Graphics.Direct2d;
 
 public interface IPathGeometry : IGeometry
 {
+    GeometrySink Open();
+    void Stream(IGeometrySink sink);
+    int GetSegmentCount();
+    int GetFigureCount();
 }

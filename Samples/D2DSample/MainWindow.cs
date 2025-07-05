@@ -16,6 +16,7 @@ public partial class MainWindow : Form
     private Dxgi.Device? _dxgiDevice;
     private Dxgi.SwapChain? _swapChain;
     private Dxgi.Surface? _surface;
+    private WicImagingFactory2? _wicFactory;
 
     private Direct2dFactory1? _factory;
     private DeviceContext? _deviceContext;
@@ -23,7 +24,9 @@ public partial class MainWindow : Form
     private SolidColorBrush? _brush;
 
     private BitmapF? _gradient;
-    private Managed.Graphics.Direct2d.Bitmap _gradientBitmap;
+
+    private Managed.Graphics.Direct2d.Bitmap? _picture;
+    private Managed.Graphics.Direct2d.Bitmap? _gradientBitmap;
 
     private float _time;
     private float _baseHue;
@@ -41,7 +44,7 @@ public partial class MainWindow : Form
 
     private void CreateGradient()
     {
-        if (_deviceContext != null && _gradientBitmap == null)
+        if (_deviceContext != null && _gradientBitmap == null && _wicFactory != null)
         {
             BitmapF bitmap = BitmapF.CreateBitmap(256, 256);
             var r = bitmap.GetChannel(BitmapChannel.Red);
@@ -59,6 +62,15 @@ public partial class MainWindow : Form
             BitmapF.AssembleBGRA(buffer, r, g, b, a, bitmap.Width, bitmap.Height);
             _gradientBitmap = BitmapF.CreateBitmapFromRawData(_deviceContext, buffer, bitmap.Width, bitmap.Height);
             _gradient = bitmap;
+
+            string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_04\JPEG\3M6A7224_s.JPG";
+
+            var bitmapF = BitmapF.SplitBitmap(_wicFactory, fileName);
+            bitmapF.Log();
+            var pictureF = bitmapF.CreateBitmap(_deviceContext);
+
+            _picture = pictureF;
+            //_picture = BitmapF.LoadBitmapFromFile(_wicFactory, _deviceContext, fileName);
         }
     }
 
@@ -129,9 +141,11 @@ public partial class MainWindow : Form
 
         CreateGradient();
         var dstSize = renderTarget.Size;
-        var bmpSize = _gradientBitmap.Size;
+        var bmpSize = _picture!.Size;
 
-        renderTarget.DrawBitmap(_gradientBitmap,
+        //renderTarget.DrawBitmap(_picture!);
+
+        renderTarget.DrawBitmap(_picture,
               new RectF(
                   (dstSize.Width - bmpSize.Width) / 2,
                   (dstSize.Height - bmpSize.Height) / 2,
@@ -190,7 +204,7 @@ public partial class MainWindow : Form
             _dxgiDevice.Dispose();
         }
         
-        using WicImagingFactory2 wicFactory = WicImagingFactory2.CreateFactory();
+        _wicFactory = WicImagingFactory2.CreateFactory();
 
         _dxgiDevice = Dxgi.Device.CreateDevice();
         _factory = Direct2dFactory1.CreateFactory(

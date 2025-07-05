@@ -4,12 +4,11 @@
 // </copyright>
 
 using System.Runtime.CompilerServices;
-using Managed.Com;
 using Managed.Win32.Graphics.Imaging;
 
 namespace Managed.Graphics.Wic;
 
-public unsafe class WicFormatConverter : ComObject<IWICFormatConverter>, IWicFormatConverter
+public unsafe class WicFormatConverter : WicBitmapSource<IWICFormatConverter>, IWicFormatConverter
 {
     internal WicFormatConverter(IWICFormatConverter* formatConverter) : base(formatConverter)
     {
@@ -17,8 +16,15 @@ public unsafe class WicFormatConverter : ComObject<IWICFormatConverter>, IWicFor
 
     //[return: NativeTypeName("HRESULT")]
     //int Initialize(IWICBitmapSource* pISource, [NativeTypeName("REFWICPixelFormatGUID")] Guid* dstFormat, WICBitmapDitherType dither, IWICPalette* pIPalette, double alphaThresholdPercent, WICBitmapPaletteType paletteTranslate);
-    public void Initialize(IWicBitmapSource source, in Guid dstFormat, WicBitmapDitherType dither, IWicPalette palette, double alphaThresholdPercent, WicBitmapPaletteType paletteTranslate)
+    public void Initialize(
+        IWicBitmapSource source,
+        in Guid dstFormat,
+        WicBitmapDitherType dither,
+        IWicPalette? palette,
+        double alphaThresholdPercent,
+        WicBitmapPaletteType paletteTranslate)
     {
+        ArgumentNullException.ThrowIfNull(source);
         CheckResult(Native->Initialize(
             (IWICBitmapSource*)source.Native,
             (Guid*)Unsafe.AsPointer(in dstFormat),
@@ -31,7 +37,7 @@ public unsafe class WicFormatConverter : ComObject<IWICFormatConverter>, IWicFor
     //[return: NativeTypeName("HRESULT")]
     //int CanConvert([NativeTypeName("REFWICPixelFormatGUID")] Guid* srcPixelFormat, [NativeTypeName("REFWICPixelFormatGUID")] Guid* dstPixelFormat, [NativeTypeName("BOOL *")] int* pfCanConvert);
 
-    bool CanConvert(in Guid srcPixelFormat, in Guid dstPixelFormat)
+    private bool CanConvert(in Guid srcPixelFormat, in Guid dstPixelFormat)
     {
         int result;
         CheckResult(Native->CanConvert(

@@ -11,7 +11,7 @@ using ComApi = Managed.Win32.ComOle.Methods;
 
 namespace Managed.Graphics.Wic;
 
-public unsafe class WicImagingFactory2 : WicImagingFactory<IWICImagingFactory2>
+public unsafe class WicImagingFactory2 : WicImagingFactory<IWICImagingFactory2>, IWicImagingFactory2
 {
     internal WicImagingFactory2(IWICImagingFactory2* imagingFactory) : base(imagingFactory)
     {

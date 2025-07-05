@@ -3,6 +3,9 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System.Numerics.Tensors;
+using Managed.Graphics.Wic;
+
 namespace Managed.Graphics.Direct2d;
 
 public enum BitmapChannel
@@ -24,19 +27,83 @@ public class BitmapF
         _data = new float[width * height * 4];
     }
 
+    private unsafe BitmapF(int width, int height, ReadOnlySpan<byte> pixels, in Guid pixelFormat)
+    {
+        Width = width;
+        Height = height;
+        var pixelCount = width * height;
+        _data = GC.AllocateUninitializedArray<float>(width * height * 4);
+        fixed (byte* src = pixels)
+        fixed (float* r = &_data[pixelCount * 0])
+        fixed (float* g = &_data[pixelCount * 1])
+        fixed (float* b = &_data[pixelCount * 2])
+        fixed (float* a = &_data[pixelCount * 3])
+        {
+            for (var i = 0; i < pixelCount; ++i)
+            {
+                r[i] = src[(i * 4) + 0] / 255f;
+                g[i] = src[(i * 4) + 1] / 255f;
+                b[i] = src[(i * 4) + 2] / 255f;
+                a[i] = src[(i * 4) + 3] / 255f;
+            }
+        }
+    }
+
     public int Width { get; }
 
     public int Height { get; }
 
     public Span<float> GetChannel(BitmapChannel channel)
     {
-        var channelSize = Width * Height;
-        return new Span<float>(_data, (int)channel * channelSize, channelSize);
+        var pixelCount = Width * Height;
+        return new Span<float>(_data, (int)channel * pixelCount, pixelCount);
     }
 
     public static BitmapF CreateBitmap(int width, int size)
     {
         return new BitmapF(width, size);
+    }
+
+    public unsafe void Log()
+    {
+        LogChannel(GetChannel(BitmapChannel.Red));
+        LogChannel(GetChannel(BitmapChannel.Green));
+        LogChannel(GetChannel(BitmapChannel.Blue));
+        static void LogChannel(Span<float> red)
+        {
+            TensorPrimitives.Multiply(red, 255f, red);
+            TensorPrimitives.Log(red, red);
+            TensorPrimitives.Divide(red, MathF.Log(255), red);
+        }
+    }
+
+    public Bitmap CreateBitmap(IRenderTarget renderTarget)
+    {
+        BitmapProperties properties = new(
+            new PixelFormat(Dxgi.DxgiFormat.B8G8R8A8_UNORM, AlphaMode.Premultiplied),
+            96f,
+            96f);
+
+        byte[] buffer = GC.AllocateUninitializedArray<byte>(Width * Height * 4);
+        AssembleBGRA(buffer);
+
+        return renderTarget.CreateBitmap(
+            new SizeU(Width, Height),
+            buffer,
+            Width * 4,
+            in properties);
+    }
+
+    public void AssembleBGRA(Span<byte> dst)
+    {
+        int pixelCount = Width * Height;
+        AssembleBGRA(dst,
+            _data.AsSpan(pixelCount * 0, pixelCount),
+            _data.AsSpan(pixelCount * 1, pixelCount),
+            _data.AsSpan(pixelCount * 2, pixelCount),
+            _data.AsSpan(pixelCount * 3, pixelCount),
+            Width,
+            Height);
     }
 
     public static unsafe void AssembleBGRA(
@@ -97,11 +164,55 @@ public class BitmapF
             96f,
             96f);
 
-        return ((DeviceContext)renderTarget).CreateBitmap(
+        return renderTarget.CreateBitmap(
             new SizeU(width, height),
-            bgraData, 
-            width * 4, 
+            bgraData,
+            width * 4,
             in properties);
+    }
+
+    public static Bitmap LoadBitmapFromFile(
+        IWicImagingFactory factory,
+        IRenderTarget renderTarget,
+        string fileName)
+    {
+        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(renderTarget);
+        using var converter = GetConverter(factory, fileName);
+        return renderTarget.CreateBitmapFromWicBitmap(converter);
+    }
+
+    public static BitmapF SplitBitmap(
+        IWicImagingFactory factory,
+        string fileName)
+    {
+        using var converter = GetConverter(factory, fileName);
+        var size = converter.Size;
+        var pixelCount = size.Width * size.Height;
+        var pixelBuffer = GC.AllocateUninitializedArray<byte>(pixelCount * 4);
+        var stride = size.Width * 4;
+        var bufferSize = stride * size.Height;
+        converter.CopyPixels(stride, pixelBuffer.AsSpan());
+        return new BitmapF(size.Width, size.Height, pixelBuffer, converter.PixelFormat);
+    }
+
+    private static WicFormatConverter GetConverter(IWicImagingFactory factory, string fileName)
+    {
+        using var decoder = factory.CreateDecoderFromFilename(
+            fileName,
+            DesiredAccess.Read,
+            WicDecodeOptions.MetadataCacheOnDemand);
+        using var source = decoder.GetFrame(0);
+        var converter = factory.CreateFormatConverter();
+        converter.Initialize(
+            source,
+            //Guids.GUID_WICPixelFormat32bppPBGRA,
+            Guids.GUID_WICPixelFormat32bppPRGBA,
+            WicBitmapDitherType.None,
+            null,
+            0f,
+            WicBitmapPaletteType.Custom);
+        return converter;
     }
 }
 

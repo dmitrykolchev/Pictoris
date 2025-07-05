@@ -9,6 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="System.Numerics.Tensors" Version="9.0.6" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\Managed.Win32\Managed.Win32.csproj" />
 	</ItemGroup>
 

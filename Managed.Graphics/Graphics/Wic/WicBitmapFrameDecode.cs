@@ -8,7 +8,7 @@ using Managed.Win32.Graphics.Imaging;
 
 namespace Managed.Graphics.Wic;
 
-public unsafe class WicBitmapFrameDecode : ComObject<IWICBitmapFrameDecode>
+public unsafe class WicBitmapFrameDecode : ComObject<IWICBitmapFrameDecode>, IWicBitmapFrameDecode
 {
     internal WicBitmapFrameDecode(IWICBitmapFrameDecode* bitmapFrame) : base(bitmapFrame)
     {

@@ -9,4 +9,9 @@ namespace Managed.Graphics.Wic;
 
 public interface IWicImagingFactory : IComObject
 {
+    WicBitmapDecoder CreateDecoderFromFilename(string filename, DesiredAccess desiredAccess, WicDecodeOptions metadataOptions);
+    WicBitmapDecoder CreateDecoderFromFilename(string filename, in Guid vendor, DesiredAccess desiredAccess, WicDecodeOptions metadataOptions);
+
+    WicFormatConverter CreateFormatConverter();
+
 }

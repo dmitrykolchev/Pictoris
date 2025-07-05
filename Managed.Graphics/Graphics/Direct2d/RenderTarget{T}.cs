@@ -46,6 +46,15 @@ public unsafe class RenderTarget<T> : Resource<T>
             &bitmap));
         return new Bitmap(bitmap);
     }
+    public Bitmap CreateBitmapFromWicBitmap(IWicBitmapSource bitmapSource)
+    {
+        ID2D1Bitmap* bitmap;
+        CheckResult(Native->CreateBitmapFromWicBitmap(
+            (IWICBitmapSource*)bitmapSource.Native,
+            null,
+            &bitmap));
+        return new Bitmap(bitmap);
+    }
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateSharedBitmap([NativeTypeName("const IID &")] Guid* riid, void* data, [NativeTypeName("const D2D1_BITMAP_PROPERTIES *")] D2D1_BITMAP_PROPERTIES* bitmapProperties, ID2D1Bitmap** bitmap);
@@ -79,7 +88,7 @@ public unsafe class RenderTarget<T> : Resource<T>
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateBitmapBrush(ID2D1Bitmap* bitmap, [NativeTypeName("const D2D1_BITMAP_BRUSH_PROPERTIES *")] D2D1_BITMAP_BRUSH_PROPERTIES* bitmapBrushProperties, [NativeTypeName("const D2D1_BRUSH_PROPERTIES *")] D2D1_BRUSH_PROPERTIES* brushProperties, ID2D1BitmapBrush** bitmapBrush);
-    private BitmapBrush CreateBitmapBrush(
+    public BitmapBrush CreateBitmapBrush(
         IBitmap bitmap,
         in BitmapBrushProperties bitmapBrushProperties,
         in BrushProperties brushProperties)
@@ -192,6 +201,12 @@ public unsafe class RenderTarget<T> : Resource<T>
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateLayer([NativeTypeName("const D2D1_SIZE_F *")] D2D_SIZE_F* size, ID2D1Layer** layer);
+    public Layer CreateLayer(in SizeF size)
+    {
+        ID2D1Layer* layer;
+        CheckResult(Native->CreateLayer((D2D_SIZE_F*)Unsafe.AsPointer(in size), &layer));
+        return new Layer(layer);
+    }
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateMesh(ID2D1Mesh** mesh);

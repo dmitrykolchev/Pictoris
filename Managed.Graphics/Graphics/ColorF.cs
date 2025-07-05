@@ -11,17 +11,17 @@ namespace Managed.Graphics;
 
 public struct ColorF
 {
-    public readonly float r;
-    public readonly float g;
-    public readonly float b;
-    public readonly float a;
+    public readonly float R;
+    public readonly float G;
+    public readonly float B;
+    public readonly float A;
 
     private ColorF(float r, float g, float b, float a)
     {
-        this.r = MathF.Max(0f, MathF.Min(1f, r));
-        this.g = MathF.Max(0f, MathF.Min(1f, g));
-        this.b = MathF.Max(0f, MathF.Min(1f, b));
-        this.a = MathF.Max(0f, MathF.Min(1f, a));
+        R = MathF.Max(0f, MathF.Min(1f, r));
+        G = MathF.Max(0f, MathF.Min(1f, g));
+        B = MathF.Max(0f, MathF.Min(1f, b));
+        A = MathF.Max(0f, MathF.Min(1f, a));
     }
 
     private ColorF(float r, float g, float b) : this(r, g, b, 1f)
@@ -100,6 +100,30 @@ public struct ColorF
     {
         return new ColorF(XMath.YUVToRGBImpl.YUVToRGB(yuv));
     }
+    public static Vector128<float> ToSRGB(Vector128<float> rgb)
+    {
+        return XMath.RGBToSRGBImpl.RGBToSRGB(rgb);
+    }
+
+    public static Vector128<float> ToHSV(Vector128<float> rgb)
+    {
+        return XMath.RGBToHSV(rgb);
+    }
+
+    public static Vector128<float> ToHSL(Vector128<float> rgb)
+    {
+        return XMath.RGBToHSL(rgb);
+    }
+
+    public static Vector128<float> ToXYZ(Vector128<float> rgb)
+    {
+        return XMath.RGBToXYZImpl.RGBToXYZ(rgb);
+    }
+
+    public static Vector128<float> ToYUV(Vector128<float> rgb)
+    {
+        return XMath.RGBToYUVImpl.RGBToYUV(rgb);
+    }
 
     public Vector128<float> ToSRGB()
     {
@@ -150,10 +174,10 @@ public struct ColorF
     public static ColorF Lerp(in ColorF c1, in ColorF c2, float t)
     {
         return FromRGBA(
-            c1.r + ((c2.r - c1.r) * t),
-            c1.g + ((c2.g - c1.g) * t),
-            c1.b + ((c2.b - c1.b) * t),
-            c1.a + ((c2.a - c1.a) * t));
+            c1.R + ((c2.R - c1.R) * t),
+            c1.G + ((c2.G - c1.G) * t),
+            c1.B + ((c2.B - c1.B) * t),
+            c1.A + ((c2.A - c1.A) * t));
     }
 
     public unsafe Vector128<float> AsVector()
@@ -164,12 +188,11 @@ public struct ColorF
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static unsafe Vector128<float> AsVector(in ColorF color)
     {
-        var ptr = Unsafe.AsPointer(in color);
-        return Vector128.Create<float>(new ReadOnlySpan<float>(ptr, 4));
+        return Vector128.Create(color.R, color.G, color.B, color.A);
     }
 
     public override string ToString()
     {
-        return $"(r:{r}, g:{g}, b:{b}, a:{a})";
+        return $"(r:{R}, g:{G}, b:{B}, a:{A})";
     }
 }

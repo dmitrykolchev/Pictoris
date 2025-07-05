@@ -63,7 +63,7 @@ public partial class MainWindow : Form
             _gradientBitmap = BitmapF.CreateBitmapFromRawData(_deviceContext, buffer, bitmap.Width, bitmap.Height);
             _gradient = bitmap;
 
-            string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_04\JPEG\3M6A7224_s.JPG";
+            string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_04\JPEG\3M6A7224_s.JPG"; //
 
             var bitmapF = BitmapF.SplitBitmap(_wicFactory, fileName);
             bitmapF.Log();
@@ -199,10 +199,7 @@ public partial class MainWindow : Form
 
     private unsafe void MainWindow_Load(object? sender, EventArgs e)
     {
-        if (_dxgiDevice != null)
-        {
-            _dxgiDevice.Dispose();
-        }
+        _dxgiDevice?.Dispose();
         
         _wicFactory = WicImagingFactory2.CreateFactory();
 

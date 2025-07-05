@@ -1,8 +1,9 @@
-﻿// <copyright file="BitmapF.cs" company="Dmitry Kolchev">
+// <copyright file="BitmapF.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
 
+using System;
 using System.Numerics.Tensors;
 using Managed.Graphics.Wic;
 
@@ -74,6 +75,28 @@ public class BitmapF
             TensorPrimitives.Multiply(red, 255f, red);
             TensorPrimitives.Log(red, red);
             TensorPrimitives.Divide(red, MathF.Log(255), red);
+        }
+    }
+
+    public unsafe void Exp()
+    {
+        ExpChannel(GetChannel(BitmapChannel.Red));
+        ExpChannel(GetChannel(BitmapChannel.Green));
+        ExpChannel(GetChannel(BitmapChannel.Blue));
+        static void ExpChannel(Span<float> red)
+        {
+            TensorPrimitives.Exp(red, red);
+            TensorPrimitives.Divide(red, MathF.E, red);
+        }
+    }
+    public unsafe void SoftMax()
+    {
+        CalcChannel(GetChannel(BitmapChannel.Red));
+        CalcChannel(GetChannel(BitmapChannel.Green));
+        CalcChannel(GetChannel(BitmapChannel.Blue));
+        static void CalcChannel(Span<float> red)
+        {
+            TensorPrimitives.SoftMax(red, red);
         }
     }
 
@@ -215,5 +238,3 @@ public class BitmapF
         return converter;
     }
 }
-
-

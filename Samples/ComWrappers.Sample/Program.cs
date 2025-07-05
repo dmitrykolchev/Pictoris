@@ -142,9 +142,7 @@ namespace Tutorial
         /// <summary>
         /// Preallocate COM artifacts to avoid penalty during wrapper creation.
         /// </summary>
-#pragma warning disable CA1810 // Initialize reference type static fields inline
         static DemoComWrappers()
-#pragma warning restore CA1810 // Initialize reference type static fields inline
         {
             // Get system provided IUnknown implementation.
             GetIUnknownImpl(

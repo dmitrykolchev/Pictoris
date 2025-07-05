@@ -16,3 +16,6 @@ public struct KnownColor
     internal byte G => (byte)((_color & 0x00FF00) >> 8);
     internal byte B => (byte)(_color & 0x0000FF);
 }
+
+
+

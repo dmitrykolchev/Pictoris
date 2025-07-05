@@ -1691,8 +1691,6 @@ public sealed partial class PInvokeGenerator : IDisposable
             }
         }
 
-#pragma warning disable CA1031 // Do not catch general exception types
-
         try
         {
             if (_config.GenerateMacroBindings)
@@ -1960,8 +1958,6 @@ public sealed partial class PInvokeGenerator : IDisposable
             var diagnostic = new Diagnostic(DiagnosticLevel.Error, e.ToString());
             _diagnostics.Add(diagnostic);
         }
-
-#pragma warning restore CA1031 // Do not catch general exception types
 
         GC.KeepAlive(translationUnit);
     }

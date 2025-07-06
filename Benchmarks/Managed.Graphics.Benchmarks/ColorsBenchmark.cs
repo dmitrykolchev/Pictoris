@@ -28,12 +28,14 @@ public class ColorsBenchmark
     [Benchmark]
     public void RgbToHslSimple()
     {
-        var (h, s, l) = ConvertRgbToHsl(_rgb[0], _rgb[1], _rgb[2]);
+        var (h, s, l) = ConvertRgbToHsl(in _rgb);
         Vector128.Create(h, s, l, 1f);
     }
 
-    public static (float h, float s, float l) ConvertRgbToHsl(float r, float g, float b)
+    public static (float h, float s, float l) ConvertRgbToHsl(in Vector128<float> rgb)
     {
+        float r = rgb[0], g = rgb[1], b = rgb[2];
+
         float cmax = MathF.Max(r, MathF.Max(g, b));
         float cmin = MathF.Min(r, MathF.Max(g, b));
         float delta = cmax - cmin;

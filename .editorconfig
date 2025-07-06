@@ -92,6 +92,7 @@ csharp_style_prefer_local_over_anonymous_function = true:suggestion
 csharp_prefer_static_local_function = true:suggestion
 csharp_style_conditional_delegate_call = true:suggestion
 csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 
 [*.{xml,config,*proj,nuspec,props,resx,targets,yml,tasks}]
 indent_size = 2
@@ -331,16 +332,16 @@ dotnet_diagnostic.IDE0043.severity = warning
 dotnet_diagnostic.IDE0044.severity = warning
 
 # IDE0051: Remove unused private members
-dotnet_diagnostic.IDE0051.severity = warning
+dotnet_diagnostic.IDE0051.severity = suggestion
 
 # IDE0055: All formatting rules
 dotnet_diagnostic.IDE0055.severity = suggestion
 
 # IDE0059: Unnecessary assignment to a value
-dotnet_diagnostic.IDE0059.severity = warning
+dotnet_diagnostic.IDE0059.severity = suggestion
 
 # IDE0060: Remove unused parameter
-dotnet_code_quality_unused_parameters = non_public
+dotnet_code_quality_unused_parameters = non_public:suggestion
 dotnet_diagnostic.IDE0060.severity = warning
 
 # IDE0062: Make local function static
@@ -506,6 +507,7 @@ dotnet_style_prefer_conditional_expression_over_return = true:silent
 dotnet_style_explicit_tuple_names = true:suggestion
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
 dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_qualification_for_method = false:silent
 
 
 # Verify settings

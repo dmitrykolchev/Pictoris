@@ -1,4 +1,4 @@
-﻿// <copyright file="DeviceContext.cs" company="Dmitry Kolchev">
+// <copyright file="DeviceContext.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -15,7 +15,7 @@ public unsafe class DeviceContext : RenderTarget<ID2D1DeviceContext>, IDeviceCon
     {
     }
 
-    public Bitmap1 CreateBitmapFromDxgiSurface(Surface dxgiSurface, in BitmapProperties1 bitmapProperties)
+    public Bitmap1 CreateBitmapFromDxgiSurface(DxgiSurface dxgiSurface, in BitmapProperties1 bitmapProperties)
     {
         ID2D1Bitmap1* bitmap;
         CheckResult(Native->CreateBitmapFromDxgiSurface(
@@ -27,7 +27,7 @@ public unsafe class DeviceContext : RenderTarget<ID2D1DeviceContext>, IDeviceCon
     }
 
     public Bitmap1 CreateBitmapFromDxgiSurface(
-        Surface dxgiSurface,
+        DxgiSurface dxgiSurface,
         float dpiX = 0,
         float dpiY = 0,
         ColorContext? colorContext = null)

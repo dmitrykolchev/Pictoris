@@ -1,4 +1,4 @@
-﻿// <copyright file="Direct2dFactory1{T}.cs" company="Dmitry Kolchev">
+// <copyright file="Direct2dFactory1{T}.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -18,7 +18,7 @@ public unsafe class Direct2dFactory1<T> : Direct2dFactory<T>
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateDevice(IDXGIDevice* dxgiDevice, ID2D1Device** d2dDevice);
-    public Device CreateDevice(Dxgi.Device dxgiDevice)
+    public Device CreateDevice(Dxgi.DxgiDevice dxgiDevice)
     {
         ID2D1Device* device;
         CheckResult(Native->CreateDevice(dxgiDevice.Native, &device));

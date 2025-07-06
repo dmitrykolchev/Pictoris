@@ -1,4 +1,4 @@
-﻿// <copyright file="Bitmap1.cs" company="Dmitry Kolchev">
+// <copyright file="Bitmap1.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -33,11 +33,11 @@ public unsafe class Bitmap1 : Bitmap<ID2D1Bitmap1>, IBitmap1
     //[return: NativeTypeName("HRESULT")]
     //int GetSurface(IDXGISurface** dxgiSurface);
 
-    public Surface GetSurface()
+    public DxgiSurface GetSurface()
     {
         IDXGISurface* surface;
         CheckResult(Native->GetSurface(&surface));
-        return new Surface(surface);
+        return new DxgiSurface(surface);
     }
 
     //[return: NativeTypeName("HRESULT")]

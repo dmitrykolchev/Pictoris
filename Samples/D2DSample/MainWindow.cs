@@ -6,6 +6,7 @@
 using System.Runtime.Intrinsics;
 using Managed.Graphics;
 using Managed.Graphics.Direct2d;
+using Managed.Graphics.Dxgi;
 using Managed.Graphics.Wic;
 using Dxgi = Managed.Graphics.Dxgi;
 
@@ -13,9 +14,9 @@ namespace D2DSample;
 
 public partial class MainWindow : Form
 {
-    private Dxgi.Device? _dxgiDevice;
-    private Dxgi.SwapChain? _swapChain;
-    private Dxgi.Surface? _surface;
+    private Dxgi.DxgiDevice? _dxgiDevice;
+    private Dxgi.IDxgiSwapChain? _swapChain;
+    private Dxgi.DxgiSurface? _surface;
     private WicImagingFactory2? _wicFactory;
 
     private Direct2dFactory1? _factory;
@@ -203,14 +204,14 @@ public partial class MainWindow : Form
         
         _wicFactory = WicImagingFactory2.CreateFactory();
 
-        _dxgiDevice = Dxgi.Device.CreateDevice();
+        _dxgiDevice = Dxgi.DxgiDevice.CreateDevice();
         _factory = Direct2dFactory1.CreateFactory(
             FactoryType.SingleThreaded);
         using (var device = _factory.CreateDevice(_dxgiDevice))
         {
             _deviceContext = device.CreateDeviceContext(DeviceContextOptions.None);
             using var adapter = _dxgiDevice.GetAdapter();
-            using var factory = adapter.GetFactory();
+            using var factory = adapter.GetFactory<DxgiFactory2>();
             _swapChain = factory.CreateSwapChainForHwnd(_dxgiDevice, Handle);
             _dxgiDevice.MaximumFrameLatency = 1;
 

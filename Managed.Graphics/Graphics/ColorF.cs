@@ -52,14 +52,14 @@ public readonly struct ColorF
         return new ColorF(r, g, b, a);
     }
 
-    public static ColorF FromSRGB(float r, float g, float b, float a)
+    public static unsafe ColorF FromSRGB(float r, float g, float b, float a)
     {
         return FromSRGB(Vector128.Create<float>([r, g, b, a]));
     }
 
-    public static ColorF FromSRGB(Vector128<float> srgb)
+    public static unsafe ColorF FromSRGB(Vector128<float> srgb)
     {
-        return new ColorF(XMath.SRGBToRGBImpl.SRGBToRGB(srgb));
+        return new ColorF(XMath.SRGBToRGB(srgb));
     }
 
     public static ColorF FromHSV(float h, float s, float v)
@@ -67,7 +67,7 @@ public readonly struct ColorF
         return FromHSV(Vector128.Create<float>([h, s, v, 1f]));
     }
 
-    public static ColorF FromHSV(Vector128<float> hsv)
+    public static unsafe ColorF FromHSV(Vector128<float> hsv)
     {
         return new ColorF(XMath.HSVToRGB(hsv));
     }
@@ -77,7 +77,7 @@ public readonly struct ColorF
         return FromHSL(Vector128.Create<float>([h, s, l, a]));
     }
 
-    public static ColorF FromHSL(Vector128<float> hsl)
+    public static unsafe ColorF FromHSL(Vector128<float> hsl)
     {
         return new ColorF(XMath.HSLToRGB(hsl));
     }
@@ -87,75 +87,75 @@ public readonly struct ColorF
         return FromXYZ(Vector128.Create<float>([x, y, z, a]));
     }
 
-    public static ColorF FromXYZ(Vector128<float> xyz)
+    public static unsafe ColorF FromXYZ(Vector128<float> xyz)
     {
-        return new ColorF(XMath.XYZToRGBImpl.XYZToRGB(xyz));
+        return new ColorF(XMath.XYZToRGB(xyz));
     }
     public static ColorF FromYUV(float y, float u, float v, float a = 1f)
     {
         return FromYUV(Vector128.Create<float>([y, u, v, a]));
     }
 
-    public static ColorF FromYUV(Vector128<float> yuv)
+    public static unsafe ColorF FromYUV(Vector128<float> yuv)
     {
-        return new ColorF(XMath.YUVToRGBImpl.YUVToRGB(yuv));
+        return new ColorF(XMath.YUVToRGB(yuv));
     }
-    public static Vector128<float> ToSRGB(Vector128<float> rgb)
+    public static unsafe Vector128<float> ToSRGB(Vector128<float> rgb)
     {
-        return XMath.RGBToSRGBImpl.RGBToSRGB(rgb);
+        return XMath.RGBToSRGB(rgb);
     }
 
-    public static Vector128<float> ToHSV(Vector128<float> rgb)
+    public static unsafe Vector128<float> ToHSV(Vector128<float> rgb)
     {
         return XMath.RGBToHSV(rgb);
     }
 
-    public static Vector128<float> ToHSL(Vector128<float> rgb)
+    public static unsafe Vector128<float> ToHSL(Vector128<float> rgb)
     {
         return XMath.RGBToHSL(rgb);
     }
 
-    public static Vector128<float> ToXYZ(Vector128<float> rgb)
+    public static unsafe Vector128<float> ToXYZ(Vector128<float> rgb)
     {
-        return XMath.RGBToXYZImpl.RGBToXYZ(rgb);
+        return XMath.RGBToXYZ(rgb);
     }
 
-    public static Vector128<float> ToYUV(Vector128<float> rgb)
+    public static unsafe Vector128<float> ToYUV(Vector128<float> rgb)
     {
-        return XMath.RGBToYUVImpl.RGBToYUV(rgb);
+        return XMath.RGBToYUV(rgb);
     }
 
-    public Vector128<float> ToSRGB()
+    public unsafe Vector128<float> ToSRGB()
     {
-        return XMath.RGBToSRGBImpl.RGBToSRGB(AsVector());
+        return XMath.RGBToSRGB(AsVector());
     }
 
-    public Vector128<float> ToHSV()
+    public unsafe Vector128<float> ToHSV()
     {
         return XMath.RGBToHSV(AsVector());
     }
 
-    public Vector128<float> ToHSL()
+    public unsafe Vector128<float> ToHSL()
     {
         return XMath.RGBToHSL(AsVector());
     }
 
-    public Vector128<float> ToXYZ()
+    public unsafe Vector128<float> ToXYZ()
     {
-        return XMath.RGBToXYZImpl.RGBToXYZ(AsVector());
+        return XMath.RGBToXYZ(AsVector());
     }
 
-    public Vector128<float> ToYUV()
+    public unsafe Vector128<float> ToYUV()
     {
-        return XMath.RGBToYUVImpl.RGBToYUV(AsVector());
+        return XMath.RGBToYUV(AsVector());
     }
 
-    public ColorF AdjustContrast(float contrast)
+    public unsafe ColorF AdjustContrast(float contrast)
     {
         return new ColorF(XMath.AdjustContrast(AsVector(), contrast));
     }
 
-    public ColorF AdjustSaturation(float saturation)
+    public unsafe ColorF AdjustSaturation(float saturation)
     {
         return new ColorF(XMath.AdjustSaturation(AsVector(), saturation));
     }

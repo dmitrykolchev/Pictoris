@@ -1,4 +1,4 @@
-﻿// <copyright file="Device.cs" company="Dmitry Kolchev">
+// <copyright file="Device.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -14,11 +14,11 @@ using D3dApi = Managed.Win32.Graphics.Direct3d.Methods;
 
 namespace Managed.Graphics.Dxgi;
 
-public unsafe class Device : ComObject<IDXGIDevice>
+public unsafe class DxgiDevice : ComObject<IDXGIDevice>
 {
     private readonly FeatureLevel _featureLevel;
 
-    internal unsafe Device(IDXGIDevice* device, FeatureLevel level) : base(device)
+    internal unsafe DxgiDevice(IDXGIDevice* device, FeatureLevel level) : base(device)
     {
         _featureLevel = level;
     }
@@ -58,14 +58,14 @@ public unsafe class Device : ComObject<IDXGIDevice>
         }
     }
 
-    public Adapter GetAdapter()
+    public DxgiAdapter GetAdapter()
     {
         IDXGIAdapter* adapter;
         CheckResult(Native->GetAdapter(&adapter));
-        return new Adapter(adapter);
+        return new DxgiAdapter(adapter);
     }
 
-    public static unsafe Device CreateDevice()
+    public static unsafe DxgiDevice CreateDevice()
     {
         ID3D11Device* device;
         var hr = CreateDevice(null, DriverType.Hardware, CreateDeviceFlag.BgraSupport, &device, out var level);
@@ -77,7 +77,7 @@ public unsafe class Device : ComObject<IDXGIDevice>
         {
             IDXGIDevice* dxgiDevice;
             CheckResult(device->QueryInterface(__uuidof<IDXGIDevice>(), (void**)&dxgiDevice));
-            return new Device(dxgiDevice, level);
+            return new DxgiDevice(dxgiDevice, level);
         }
         finally
         {

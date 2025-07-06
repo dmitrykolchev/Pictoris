@@ -3,7 +3,6 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
@@ -38,22 +37,47 @@ public static class XMath
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static FXMVECTOR AdjustContrast(FXMVECTOR v, float contrast)
     {
+        if (Sse.IsSupported)
+        {
+            FXMVECTOR scale = Vector128.Create(contrast);      // Splat the scale
+            FXMVECTOR result = Sse.Subtract(v, _oneHalf);      // Subtract 0.5f from the source (Saving source)
+            result = Sse.Add(Sse.Multiply(result, scale), _oneHalf);
+            // Retain w from the source color
+            scale = Sse.Shuffle(result, v, 0b11101010);       // x = vResult.z,y = vResult.z,z = vColor.z,w=vColor.w
+            return Sse.Shuffle(result, scale, 0b11000100);    // x = vResult.x,y = vResult.y,z = vResult.z,w=vColor.w
+        }
         return ((v - _oneHalf) * contrast) + _oneHalf;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static FXMVECTOR AdjustSaturation(FXMVECTOR v, float saturation)
     {
-        // Luminance = 0.2125f * C[0] + 0.7154f * C[1] + 0.0721f * C[2];
-        // Result = (C - Luminance) * Saturation + Luminance;
-        var luminance =
-            (v[0] * _luminance[0]) +
-            (v[1] * _luminance[1]) +
-            (v[2] * _luminance[2]);
-        return Vector128.Create(
-            ((v[0] - luminance) * saturation) + luminance,
-            ((v[1] - luminance) * saturation) + luminance,
-            ((v[2] - luminance) * saturation) + luminance,
-            v[3]);
+        if (Sse.IsSupported)
+        {
+            FXMVECTOR luminance = XMVector3Dot(v, _luminance);
+            FXMVECTOR vsaturation = Vector128.Create(saturation);
+            // vResult = ((vColor-vLuminance)*vSaturation)+vLuminance;
+            FXMVECTOR result = Sse.Subtract(v, luminance);
+            result = Sse.Add(Sse.Multiply(result, vsaturation), luminance);
+            // Retain w from the source color
+            luminance = Sse.Shuffle(result, v, 0b11101010);       // x = vResult.z, y = vResult.z, z = vColor.z, w=vColor.w
+            result = Sse.Shuffle(result, luminance, 0b11000100); // x = vResult.x, y = vResult.y, z = vResult.z, w=vColor.w
+            return result;
+        }
+        else
+        {
+            // Luminance = 0.2125f * C[0] + 0.7154f * C[1] + 0.0721f * C[2];
+            // Result = (C - Luminance) * Saturation + Luminance;
+            var luminance =
+                (v[0] * _luminance[0]) +
+                (v[1] * _luminance[1]) +
+                (v[2] * _luminance[2]);
+            return Vector128.Create(
+                ((v[0] - luminance) * saturation) + luminance,
+                ((v[1] - luminance) * saturation) + luminance,
+                ((v[2] - luminance) * saturation) + luminance,
+                v[3]);
+        }
     }
 
     public static class RGBToSRGBImpl
@@ -451,16 +475,6 @@ public static class XMath
             return Sse.Shuffle(v, v, 0b10101010);
         }
         return Vector128.Create(v[2]);
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static FXMVECTOR XMVectorSplatW(FXMVECTOR v)
-    {
-        if (Sse.IsSupported)
-        {
-            return Sse.Shuffle(v, v, 0b11111111);
-        }
-        return Vector128.Create(v[3]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

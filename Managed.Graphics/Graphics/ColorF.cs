@@ -1,4 +1,4 @@
-﻿// <copyright file="ColorF.cs" company="Dmitry Kolchev">
+// <copyright file="ColorF.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -9,7 +9,7 @@ using Managed.Graphics.DirectXMath;
 
 namespace Managed.Graphics;
 
-public struct ColorF
+public readonly struct ColorF
 {
     public readonly float R;
     public readonly float G;
@@ -164,6 +164,11 @@ public struct ColorF
     {
         var hsl = ToHSL();
         return FromHSL(hsl[0], hsl[1], hsl[2] * brightness, hsl[3]);
+    }
+
+    public ColorF Invert()
+    {
+        return ColorF.FromRGBA(1f - R, 1f - B, 1f - G, A);
     }
 
     public ColorF Modulate(in ColorF c1, in ColorF c2)

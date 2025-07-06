@@ -3,15 +3,10 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.Intrinsics;
-using System.Text;
 using BenchmarkDotNet.Attributes;
 
 namespace Managed.Graphics.Benchmarks;
-
 
 [MemoryDiagnoser()]
 public class ColorsBenchmark
@@ -42,7 +37,6 @@ public class ColorsBenchmark
         float cmax = MathF.Max(r, MathF.Max(g, b));
         float cmin = MathF.Min(r, MathF.Max(g, b));
         float delta = cmax - cmin;
-
 
         // Вычисление Яркости (Lightness)
         float l = (cmax + cmin) / 2.0f;

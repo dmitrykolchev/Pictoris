@@ -12,14 +12,16 @@ public unsafe class WicComponentInfo : WicComponentInfo<IWICComponentInfo>, IWic
     {
     }
 
-    public static explicit operator WicPixelFormatInfo(WicComponentInfo componentInfo)
+    public T As<T>() where T : IWicComponentInfo
     {
-        ArgumentNullException.ThrowIfNull(componentInfo);
-        if((componentInfo.ComponentType & WicComponentType.PixelFormat) != 0)
+        if (typeof(T) == typeof(WicPixelFormatInfo))
         {
-            IWICPixelFormatInfo* pixelFormatInfo;
-            componentInfo.Native->QueryInterface(__uuidof<IWICPixelFormatInfo>(), (void**)&pixelFormatInfo);
-            return new WicPixelFormatInfo(pixelFormatInfo);
+            if ((ComponentType & WicComponentType.PixelFormat) != 0)
+            {
+                IWICPixelFormatInfo* pixelFormatInfo;
+                Native->QueryInterface(__uuidof<IWICPixelFormatInfo>(), (void**)&pixelFormatInfo);
+                return (T)(IWicComponentInfo)new WicPixelFormatInfo(pixelFormatInfo);
+            }
         }
         throw new InvalidCastException();
     }

@@ -210,10 +210,16 @@ public class BitmapF
         string fileName)
     {
         using var converter = GetConverter(factory, fileName);
+        using var componentInfo = factory.CreateComponentInfo(converter.PixelFormat);
+        using var pixelFormatInfo = componentInfo.ComponentType == WicComponentType.PixelFormat
+            ? componentInfo.As<WicPixelFormatInfo>()
+            : throw new InvalidCastException();
+
         var size = converter.Size;
         var pixelCount = size.Width * size.Height;
-        var pixelBuffer = GC.AllocateUninitializedArray<byte>(pixelCount * 4);
-        var stride = size.Width * 4;
+        int bytesPerPixel = (pixelFormatInfo.BitsPerPixel + 7) / 8;
+        var stride = size.Width * bytesPerPixel;
+        var pixelBuffer = GC.AllocateUninitializedArray<byte>(stride * size.Height);
         var bufferSize = stride * size.Height;
         converter.CopyPixels(stride, pixelBuffer.AsSpan());
         return new BitmapF(size.Width, size.Height, pixelBuffer, converter.PixelFormat);
@@ -227,18 +233,34 @@ public class BitmapF
             WicDecodeOptions.MetadataCacheOnDemand);
         using var source = decoder.GetFrame(0);
         var pixelFormat = source.PixelFormat;
-        var componentInfo = factory.CreateComponentInfo(pixelFormat);
-        var pixelFormatInfo = (WicPixelFormatInfo)componentInfo;
 
-        var converter = factory.CreateFormatConverter();
-        converter.Initialize(
-            source,
-            //Guids.GUID_WICPixelFormat32bppPBGRA,
-            Guids.GUID_WICPixelFormat32bppPRGBA,
-            WicBitmapDitherType.None,
-            null,
-            0f,
-            WicBitmapPaletteType.Custom);
-        return converter;
+        using var componentInfo = factory.CreateComponentInfo(pixelFormat);
+
+        using var pixelFormatInfo = componentInfo.ComponentType == WicComponentType.PixelFormat
+            ? componentInfo.As<WicPixelFormatInfo>()
+            : throw new InvalidCastException();
+
+        byte[] channel1Mask = pixelFormatInfo.GetChannelMask(0);
+        byte[] channel2Mask = pixelFormatInfo.GetChannelMask(1);
+        byte[] channel3Mask = pixelFormatInfo.GetChannelMask(2);
+
+        WicFormatConverter converter = factory.CreateFormatConverter();
+        if (converter.CanConvert(pixelFormat, Guids.GUID_WICPixelFormat24bppRGB))
+        {
+            converter.Initialize(
+                source,
+                //Guids.GUID_WICPixelFormat32bppPBGRA,
+                Guids.GUID_WICPixelFormat24bppRGB,
+                WicBitmapDitherType.None,
+                null,
+                0f,
+                WicBitmapPaletteType.Custom);
+            return converter;
+        }
+        else
+        {
+            converter.Dispose();
+            throw new NotSupportedException();
+        }
     }
 }

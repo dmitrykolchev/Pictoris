@@ -18,8 +18,8 @@ public unsafe class WicImagingFactory<T> : ComObject<T>
     }
 
     public WicBitmapDecoder CreateDecoderFromFilename(
-        string filename, 
-        DesiredAccess desiredAccess, 
+        string filename,
+        DesiredAccess desiredAccess,
         WicDecodeOptions metadataOptions)
     {
         IWICBitmapDecoder* decoder;
@@ -32,9 +32,9 @@ public unsafe class WicImagingFactory<T> : ComObject<T>
     }
 
     public WicBitmapDecoder CreateDecoderFromFilename(
-        string filename, 
-        in Guid vendor, 
-        DesiredAccess desiredAccess, 
+        string filename,
+        in Guid vendor,
+        DesiredAccess desiredAccess,
         WicDecodeOptions metadataOptions)
     {
         IWICBitmapDecoder* decoder;

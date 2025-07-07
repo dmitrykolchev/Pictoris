@@ -1,4 +1,4 @@
-﻿// <copyright file="WicFormatConverter.cs" company="Dmitry Kolchev">
+// <copyright file="WicFormatConverter.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -37,7 +37,7 @@ public unsafe class WicFormatConverter : WicBitmapSource<IWICFormatConverter>, I
     //[return: NativeTypeName("HRESULT")]
     //int CanConvert([NativeTypeName("REFWICPixelFormatGUID")] Guid* srcPixelFormat, [NativeTypeName("REFWICPixelFormatGUID")] Guid* dstPixelFormat, [NativeTypeName("BOOL *")] int* pfCanConvert);
 
-    private bool CanConvert(in Guid srcPixelFormat, in Guid dstPixelFormat)
+    public bool CanConvert(in Guid srcPixelFormat, in Guid dstPixelFormat)
     {
         int result;
         CheckResult(Native->CanConvert(

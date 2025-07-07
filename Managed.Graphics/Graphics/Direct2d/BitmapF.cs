@@ -226,6 +226,10 @@ public class BitmapF
             DesiredAccess.Read,
             WicDecodeOptions.MetadataCacheOnDemand);
         using var source = decoder.GetFrame(0);
+        var pixelFormat = source.PixelFormat;
+        var componentInfo = factory.CreateComponentInfo(pixelFormat);
+        var pixelFormatInfo = (WicPixelFormatInfo)componentInfo;
+
         var converter = factory.CreateFormatConverter();
         converter.Initialize(
             source,

@@ -1,4 +1,4 @@
-﻿// <copyright file="WicImagingFactory{T}.cs" company="Dmitry Kolchev">
+// <copyright file="WicImagingFactory{T}.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -17,8 +17,6 @@ public unsafe class WicImagingFactory<T> : ComObject<T>
     {
     }
 
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateDecoderFromFilename([NativeTypeName("LPCWSTR")] char* wzFilename, [NativeTypeName("const GUID *")] Guid* pguidVendor, [NativeTypeName("DWORD")] uint dwDesiredAccess, WICDecodeOptions metadataOptions, IWICBitmapDecoder** ppIDecoder);
     public WicBitmapDecoder CreateDecoderFromFilename(
         string filename, 
         DesiredAccess desiredAccess, 
@@ -48,26 +46,15 @@ public unsafe class WicImagingFactory<T> : ComObject<T>
         return new WicBitmapDecoder(decoder);
     }
 
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateDecoderFromStream(IStream* pIStream, [NativeTypeName("const GUID *")] Guid* pguidVendor, WICDecodeOptions metadataOptions, IWICBitmapDecoder** ppIDecoder);
+    public WicComponentInfo CreateComponentInfo(in Guid clsidComponent)
+    {
+        IWICComponentInfo* info;
+        CheckResult(Native->CreateComponentInfo(
+            (Guid*)Unsafe.AsPointer(in clsidComponent),
+            &info));
+        return new WicComponentInfo(info);
+    }
 
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateDecoderFromFileHandle([NativeTypeName("ULONG_PTR")] ulong hFile, [NativeTypeName("const GUID *")] Guid* pguidVendor, WICDecodeOptions metadataOptions, IWICBitmapDecoder** ppIDecoder);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateComponentInfo([NativeTypeName("const IID &")] Guid* clsidComponent, IWICComponentInfo** ppIInfo);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateDecoder([NativeTypeName("const GUID &")] Guid* guidContainerFormat, [NativeTypeName("const GUID *")] Guid* pguidVendor, IWICBitmapDecoder** ppIDecoder);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateEncoder([NativeTypeName("const GUID &")] Guid* guidContainerFormat, [NativeTypeName("const GUID *")] Guid* pguidVendor, IWICBitmapEncoder** ppIEncoder);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreatePalette(IWICPalette** ppIPalette);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateFormatConverter(IWICFormatConverter** ppIFormatConverter);
     public WicFormatConverter CreateFormatConverter()
     {
         IWICFormatConverter* formatConverter;
@@ -75,55 +62,21 @@ public unsafe class WicImagingFactory<T> : ComObject<T>
         return new WicFormatConverter(formatConverter);
     }
 
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapScaler(IWICBitmapScaler** ppIBitmapScaler);
+    public WicBitmap CreateBitmap(int width, int height, in Guid pixelFormat, WicBitmapCreateCacheOption option)
+    {
+        IWICBitmap* bitmap;
+        CheckResult(Native->CreateBitmap(
+            unchecked((uint)width),
+            unchecked((uint)height),
+            (Guid*)Unsafe.AsPointer(in pixelFormat),
+            (WICBitmapCreateCacheOption)option,
+            &bitmap));
+        return new WicBitmap(bitmap);
+    }
 
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapClipper(IWICBitmapClipper** ppIBitmapClipper);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapFlipRotator(IWICBitmapFlipRotator** ppIBitmapFlipRotator);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateStream(IWICStream** ppIWICStream);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateColorContext(IWICColorContext** ppIWICColorContext);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateColorTransformer(IWICColorTransform** ppIWICColorTransform);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmap(uint uiWidth, uint uiHeight, [NativeTypeName("REFWICPixelFormatGUID")] Guid* pixelFormat, WICBitmapCreateCacheOption option, IWICBitmap** ppIBitmap);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapFromSource(IWICBitmapSource* pIBitmapSource, WICBitmapCreateCacheOption option, IWICBitmap** ppIBitmap);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapFromSourceRect(IWICBitmapSource* pIBitmapSource, uint x, uint y, uint width, uint height, IWICBitmap** ppIBitmap);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapFromMemory(uint uiWidth, uint uiHeight, [NativeTypeName("REFWICPixelFormatGUID")] Guid* pixelFormat, uint cbStride, uint cbBufferSize, byte* pbBuffer, IWICBitmap** ppIBitmap);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapFromHBITMAP([NativeTypeName("HBITMAP")] nint* hBitmap, [NativeTypeName("HPALETTE")] nint* hPalette, WICBitmapAlphaChannelOption options, IWICBitmap** ppIBitmap);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateBitmapFromHICON([NativeTypeName("HICON")] nint* hIcon, IWICBitmap** ppIBitmap);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateComponentEnumerator([NativeTypeName("DWORD")] uint componentTypes, [NativeTypeName("DWORD")] uint options, IEnumUnknown** ppIEnumUnknown);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateFastMetadataEncoderFromDecoder(IWICBitmapDecoder* pIDecoder, IWICFastMetadataEncoder** ppIFastEncoder);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateFastMetadataEncoderFromFrameDecode(IWICBitmapFrameDecode* pIFrameDecoder, IWICFastMetadataEncoder** ppIFastEncoder);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateQueryWriter([NativeTypeName("const GUID &")] Guid* guidMetadataFormat, [NativeTypeName("const GUID *")] Guid* pguidVendor, IWICMetadataQueryWriter** ppIQueryWriter);
-
-    //[return: NativeTypeName("HRESULT")]
-    //int CreateQueryWriterFromReader(IWICMetadataQueryReader* pIQueryReader, [NativeTypeName("const GUID *")] Guid* pguidVendor, IWICMetadataQueryWriter** ppIQueryWriter);
+    public WicPalette CreatePalette()
+    {
+        throw new NotImplementedException();
+    }
 
 }

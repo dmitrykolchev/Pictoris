@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Managed.Graphics.Benchmarks
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfGraphicsSample", "Samples\WpfGraphicsSample\WpfGraphicsSample.csproj", "{6A5749AF-DA59-4C37-9C1B-7BB5FAB621EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Managed.Graphics.Imaging", "Managed.Graphics.Imaging\Managed.Graphics.Imaging.csproj", "{E7388D66-AB2C-4B48-B984-1967D32CD6CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,18 @@ Global
 		{6A5749AF-DA59-4C37-9C1B-7BB5FAB621EC}.Release|x64.Build.0 = Release|Any CPU
 		{6A5749AF-DA59-4C37-9C1B-7BB5FAB621EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{6A5749AF-DA59-4C37-9C1B-7BB5FAB621EC}.Release|x86.Build.0 = Release|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Debug|x64.Build.0 = Debug|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Debug|x86.Build.0 = Debug|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Release|x64.ActiveCfg = Release|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Release|x64.Build.0 = Release|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{E7388D66-AB2C-4B48-B984-1967D32CD6CE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

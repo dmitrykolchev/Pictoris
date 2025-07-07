@@ -28,11 +28,11 @@ public class ColorsBenchmark
     [Benchmark]
     public void RgbToHslSimple()
     {
-        var (h, s, l) = ConvertRgbToHsl(in _rgb);
+        var (h, s, l) = ConvertRgbToHsl(_rgb);
         Vector128.Create(h, s, l, 1f);
     }
 
-    public static (float h, float s, float l) ConvertRgbToHsl(in Vector128<float> rgb)
+    public static (float h, float s, float l) ConvertRgbToHsl(Vector128<float> rgb)
     {
         float r = rgb[0], g = rgb[1], b = rgb[2];
 

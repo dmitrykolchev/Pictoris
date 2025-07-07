@@ -54,7 +54,7 @@ public readonly struct ColorF
 
     public static unsafe ColorF FromSRGB(float r, float g, float b, float a)
     {
-        return FromSRGB(Vector128.Create<float>([r, g, b, a]));
+        return FromSRGB(Vector128.Create(r, g, b, a));
     }
 
     public static unsafe ColorF FromSRGB(Vector128<float> srgb)
@@ -64,7 +64,7 @@ public readonly struct ColorF
 
     public static ColorF FromHSV(float h, float s, float v)
     {
-        return FromHSV(Vector128.Create<float>([h, s, v, 1f]));
+        return FromHSV(Vector128.Create(h, s, v, 1f));
     }
 
     public static unsafe ColorF FromHSV(Vector128<float> hsv)
@@ -74,7 +74,7 @@ public readonly struct ColorF
 
     public static ColorF FromHSL(float h, float s, float l, float a = 1f)
     {
-        return FromHSL(Vector128.Create<float>([h, s, l, a]));
+        return FromHSL(Vector128.Create(h, s, l, a));
     }
 
     public static unsafe ColorF FromHSL(Vector128<float> hsl)
@@ -84,7 +84,7 @@ public readonly struct ColorF
 
     public static ColorF FromXYZ(float x, float y, float z, float a = 1f)
     {
-        return FromXYZ(Vector128.Create<float>([x, y, z, a]));
+        return FromXYZ(Vector128.Create(x, y, z, a));
     }
 
     public static unsafe ColorF FromXYZ(Vector128<float> xyz)
@@ -93,7 +93,7 @@ public readonly struct ColorF
     }
     public static ColorF FromYUV(float y, float u, float v, float a = 1f)
     {
-        return FromYUV(Vector128.Create<float>([y, u, v, a]));
+        return FromYUV(Vector128.Create(y, u, v, a));
     }
 
     public static unsafe ColorF FromYUV(Vector128<float> yuv)

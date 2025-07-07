@@ -29,6 +29,7 @@ public partial class MainWindow : Window
     private D2D.Bitmap1? _bitmap;
 
     private D2D.SolidColorBrush? _brush;
+    private D2D.SolidColorBrush? _greenBrush;
 
     public MainWindow()
     {
@@ -88,7 +89,8 @@ public partial class MainWindow : Window
             _swapChain.GetBuffer(0, out _surface);
             _bitmap = _deviceContext.CreateBitmapFromDxgiSurface(_surface, _deviceContext.DpiX, _deviceContext.DpiY);
             _deviceContext.SetTarget(_bitmap);
-            _brush = _deviceContext.CreateSolidColorBrush(ColorF.FromKnown(KnownColors.Blue));
+            _brush = _deviceContext.CreateSolidColorBrush(ColorF.FromKnown(KnownColors.BlueViolet));
+            _greenBrush = _deviceContext.CreateSolidColorBrush(ColorF.FromKnown(KnownColors.GreenYellow));
         }
     }
 
@@ -100,8 +102,10 @@ public partial class MainWindow : Window
         }
         _deviceContext.BeginDraw();
         _deviceContext.Clear(ColorF.FromKnown(KnownColors.Black));
-        _deviceContext.FillRectangle(new RectF(100, 100, 300, 300), _brush!);
-        _deviceContext.FillRectangle(new RectF(150, 140, 300, 300), _brush!);
+        float x = (_d2dControl!.ClientSize.Width - 300) / 2;
+        float y = (_d2dControl!.ClientSize.Height - 300) / 2;
+        _deviceContext.FillRectangle(new RectF(x, y, 300, 300), _brush!);
+        _deviceContext.FillRectangle(new RectF(x + 50, y + 50, 300, 300), _greenBrush!);
         bool result = _deviceContext.EndDraw();
         _swapChain!.Present(1, DxgiPresent.None);
     }

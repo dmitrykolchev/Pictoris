@@ -90,4 +90,5 @@ public interface IWicImagingFactory : IComObject
     //[return: NativeTypeName("HRESULT")]
     //int CreateQueryWriterFromReader(IWICMetadataQueryReader* pIQueryReader, [NativeTypeName("const GUID *")] Guid* pguidVendor, IWICMetadataQueryWriter** ppIQueryWriter);
 
+    WicFormatConverter GetFormatConverterFromFilename(string filename, in Guid dstPixelFormat);
 }

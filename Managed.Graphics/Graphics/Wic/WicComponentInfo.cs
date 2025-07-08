@@ -14,12 +14,18 @@ public unsafe class WicComponentInfo : WicComponentInfo<IWICComponentInfo>, IWic
 
     public T As<T>() where T : IWicComponentInfo
     {
-        if (typeof(T) == typeof(WicPixelFormatInfo))
+        if ((ComponentType & WicComponentType.PixelFormat) != 0)
         {
-            if ((ComponentType & WicComponentType.PixelFormat) != 0)
+            if (typeof(T) == typeof(WicPixelFormatInfo2))
+            {
+                IWICPixelFormatInfo2* pixelFormatInfo2;
+                CheckResult(Native->QueryInterface(__uuidof<IWICPixelFormatInfo2>(), (void**)&pixelFormatInfo2));
+                return (T)(IWicComponentInfo)new WicPixelFormatInfo2(pixelFormatInfo2);
+            }
+            else if (typeof(T) == typeof(WicPixelFormatInfo))
             {
                 IWICPixelFormatInfo* pixelFormatInfo;
-                Native->QueryInterface(__uuidof<IWICPixelFormatInfo>(), (void**)&pixelFormatInfo);
+                CheckResult(Native->QueryInterface(__uuidof<IWICPixelFormatInfo>(), (void**)&pixelFormatInfo));
                 return (T)(IWicComponentInfo)new WicPixelFormatInfo(pixelFormatInfo);
             }
         }

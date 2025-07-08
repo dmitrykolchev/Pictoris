@@ -7,6 +7,7 @@ using System.Runtime.Intrinsics;
 using Managed.Graphics;
 using Managed.Graphics.Direct2d;
 using Managed.Graphics.Dxgi;
+using Managed.Graphics.Imaging;
 using Managed.Graphics.Wic;
 using Dxgi = Managed.Graphics.Dxgi;
 
@@ -24,7 +25,7 @@ public partial class MainWindow : Form
     private Bitmap1? _bitmap;
     private SolidColorBrush? _brush;
 
-    private BitmapF? _gradient;
+    private RgbaBitmap? _gradient;
 
     private Managed.Graphics.Direct2d.Bitmap? _picture;
     private Managed.Graphics.Direct2d.Bitmap? _gradientBitmap;
@@ -47,29 +48,28 @@ public partial class MainWindow : Form
     {
         if (_deviceContext != null && _gradientBitmap == null && _wicFactory != null)
         {
-            BitmapF bitmap = BitmapF.CreateBitmap(256, 256);
-            var r = bitmap.GetChannel(BitmapChannel.Red);
-            var g = bitmap.GetChannel(BitmapChannel.Green);
-            var b = bitmap.GetChannel(BitmapChannel.Blue);
-            var a = bitmap.GetChannel(BitmapChannel.Alpha);
-            for (int i = 0; i < bitmap.Width * bitmap.Height; ++i)
-            {
-                r[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
-                g[i] = 0;
-                b[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
-                a[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
-            }
-            byte[] buffer = new byte[bitmap.Width * bitmap.Height * 4];
-            BitmapF.AssembleBGRA(buffer, r, g, b, a, bitmap.Width, bitmap.Height);
-            _gradientBitmap = BitmapF.CreateBitmapFromRawData(_deviceContext, buffer, bitmap.Width, bitmap.Height);
-            _gradient = bitmap;
+            //BitmapF bitmap = BitmapF.CreateBitmap(256, 256);
+            //var r = bitmap.GetChannel(BitmapChannel.Red);
+            //var g = bitmap.GetChannel(BitmapChannel.Green);
+            //var b = bitmap.GetChannel(BitmapChannel.Blue);
+            //var a = bitmap.GetChannel(BitmapChannel.Alpha);
+            //for (int i = 0; i < bitmap.Width * bitmap.Height; ++i)
+            //{
+            //    r[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
+            //    g[i] = 0;
+            //    b[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
+            //    a[i] = (float)(i % bitmap.Width) / (float)bitmap.Width;
+            //}
+            //byte[] buffer = new byte[bitmap.Width * bitmap.Height * 4];
+            //BitmapF.AssembleBitmap(buffer, r, g, b, a, bitmap.Width, bitmap.Height);
+            //_gradientBitmap = BitmapF.CreateBitmapFromRawData(_deviceContext, buffer, bitmap.Width, bitmap.Height);
+            //_gradient = bitmap;
 
-            string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_04\JPEG\3M6A7224_s.JPG"; //
-
-            var bitmapF = BitmapF.SplitBitmap(_wicFactory, fileName);
-            bitmapF.Log();
+            //string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_04\JPEG\3M6A7224_s.JPG"; //
+            string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\3M6A7233.JPG";
+            var bitmapF = RgbaBitmap.Load(_wicFactory, fileName);
+            //bitmapF.Log();
             var pictureF = bitmapF.CreateBitmap(_deviceContext);
-
             _picture = pictureF;
             //_picture = BitmapF.LoadBitmapFromFile(_wicFactory, _deviceContext, fileName);
         }

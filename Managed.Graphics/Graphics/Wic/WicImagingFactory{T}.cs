@@ -79,4 +79,30 @@ public unsafe class WicImagingFactory<T> : ComObject<T>
         throw new NotImplementedException();
     }
 
+    public WicFormatConverter GetFormatConverterFromFilename(string filename, in Guid dstPixelFormat)
+    {
+        using var decoder = CreateDecoderFromFilename(
+            filename,
+            DesiredAccess.Read,
+            WicDecodeOptions.MetadataCacheOnDemand);
+        using var source = decoder.GetFrame(0);
+
+        WicFormatConverter converter = CreateFormatConverter();
+        if (converter.CanConvert(source.PixelFormat, dstPixelFormat))
+        {
+            converter.Initialize(
+                source,
+                dstPixelFormat,
+                WicBitmapDitherType.None,
+                null,
+                0f,
+                WicBitmapPaletteType.Custom);
+            return converter;
+        }
+        else
+        {
+            converter.Dispose();
+            throw new NotSupportedException();
+        }
+    }
 }

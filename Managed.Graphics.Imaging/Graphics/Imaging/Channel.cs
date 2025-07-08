@@ -11,33 +11,33 @@ public class Channel
 {
     private readonly float[] _buffer;
 
-    private Channel(int width, int height, int stride, float[] buffer)
+    private Channel(int width, int height, float[] buffer)
     {
         Width = width;
         Height = height;
-        Stride = stride != 0 ? stride : width;
         _buffer = buffer;
     }
 
-    public static Channel Create(int width, int height, int stride = 0)
+    internal static Channel Create(int width, int height, float[] buffer)
     {
-        stride = stride != 0 ? stride : width;
-        var buffer = new float[stride * height];
-        return new Channel(width, height, stride, buffer);
+        return new Channel(width, height, buffer);
     }
 
-    public static Channel CreateUninitialized(int width, int height, int stride = 0)
+    public static Channel Create(int width, int height)
     {
-        stride = stride != 0 ? stride : width;
-        var buffer = GC.AllocateUninitializedArray<float>(stride * height);
-        return new Channel(width, height, stride, buffer);
+        var buffer = new float[width * height];
+        return new Channel(width, height, buffer);
+    }
+
+    public static Channel CreateUninitialized(int width, int height)
+    {
+        var buffer = GC.AllocateUninitializedArray<float>(width * height);
+        return new Channel(width, height, buffer);
     }
 
     public int Width { get; }
 
     public int Height { get; }
-
-    public int Stride { get; }
 
     public Span<float> Buffer => _buffer;
 }

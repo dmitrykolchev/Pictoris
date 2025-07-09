@@ -535,7 +535,9 @@ public static class XMathSse
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static unsafe FXMVECTOR XMVectorSelect(FXMVECTOR v1, FXMVECTOR v2, FXMVECTOR control)
     {
-        return Sse.Or(Sse.AndNot(control, v1), Sse.And(v2, control));
+        return Sse41.IsSupported ?
+            Sse41.BlendVariable(v1, v2, control) :
+            Sse.Or(Sse.AndNot(control, v1), Sse.And(v2, control));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

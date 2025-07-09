@@ -9,6 +9,7 @@ using Managed.Graphics.Direct2d;
 using Managed.Graphics.Dxgi;
 using Managed.Graphics.Imaging;
 using Managed.Graphics.Wic;
+using Managed.Win32;
 using Dxgi = Managed.Graphics.Dxgi;
 
 namespace D2DSample;
@@ -25,7 +26,7 @@ public partial class MainWindow : Form
     private Bitmap1? _bitmap;
     private SolidColorBrush? _brush;
 
-    private RgbaBitmap? _gradient;
+    private RgbBitmap? _gradient;
 
     private Managed.Graphics.Direct2d.Bitmap? _picture;
     private Managed.Graphics.Direct2d.Bitmap? _gradientBitmap;
@@ -46,7 +47,7 @@ public partial class MainWindow : Form
 
     private void CreateGradient()
     {
-        if (_deviceContext != null && _gradientBitmap == null && _wicFactory != null)
+        if (_deviceContext != null && _picture == null)
         {
             //BitmapF bitmap = BitmapF.CreateBitmap(256, 256);
             //var r = bitmap.GetChannel(BitmapChannel.Red);
@@ -65,11 +66,17 @@ public partial class MainWindow : Form
             //_gradientBitmap = BitmapF.CreateBitmapFromRawData(_deviceContext, buffer, bitmap.Width, bitmap.Height);
             //_gradient = bitmap;
 
-            //string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_04\JPEG\3M6A7224_s.JPG"; //
-            string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\3M6A7233.JPG";
-            var bitmapF = RgbaBitmap.Load(_wicFactory, fileName);
+            string file1 = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large).JPG"; //
+            var bitmap1 = RgbBitmap.Load(_wicFactory, file1);
+            string file2 = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large)_1.JPG"; //
+            var bitmap2 = RgbBitmap.Load(_wicFactory, file2);
+            var bitmap3 = BitmapBlend.Difference(bitmap1, bitmap2);
+            bitmap3._Log(MathF.E * 10);
+            var bitmap4 = BitmapBlend.DarkenSse(bitmap3, bitmap1);
+            //string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\3M6A7233.JPG";
             //bitmapF.Log();
-            var pictureF = bitmapF.CreateBitmap(_deviceContext);
+            //BitmapOperations.Log(bitmap1, MathF.E * 4);
+            var pictureF = bitmap4.CreateBitmap(_deviceContext);
             _picture = pictureF;
             //_picture = BitmapF.LoadBitmapFromFile(_wicFactory, _deviceContext, fileName);
         }

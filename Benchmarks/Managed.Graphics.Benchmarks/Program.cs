@@ -3,7 +3,7 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
-#if !DEBUG
+#if DEBUG
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
@@ -17,12 +17,12 @@ internal class Program
 {
     static void Main(string[] args)
     {
-#if !DEBUG
+#if DEBUG
         ColorF rgb = ColorF.FromKnown(KnownColors.Aquamarine);
         var hsl = ColorF.ToHSL(rgb.AsVector());
         var result = ColorsBenchmark.ConvertRgbToHsl(rgb.AsVector());
 #else
-        BenchmarkRunner.Run<ColorsBenchmark>();
+        BenchmarkRunner.Run<BitmapBenchmarks>();
 #endif
     }
 }

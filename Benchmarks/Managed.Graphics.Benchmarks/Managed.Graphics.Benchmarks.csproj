@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Managed.Graphics.Imaging\Managed.Graphics.Imaging.csproj" />
     <ProjectReference Include="..\..\Managed.Graphics\Managed.Graphics.csproj" />
   </ItemGroup>
 

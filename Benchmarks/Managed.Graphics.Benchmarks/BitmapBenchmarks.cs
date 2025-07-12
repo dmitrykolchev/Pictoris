@@ -49,4 +49,11 @@ public class BitmapBenchmarks
         _bitmap4 = BitmapBlend.DarkenSse(_bitmap3!, _bitmap1!);
         _bitmap4.Dispose();
     }
+
+    [Benchmark]
+    public void Overlay()
+    {
+        _bitmap4 = BitmapBlend.Overlay(_bitmap3!, _bitmap1!);
+        _bitmap4.Dispose();
+    }
 }

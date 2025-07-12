@@ -73,10 +73,11 @@ public partial class MainWindow : Form
             var bitmap3 = BitmapBlend.Difference(bitmap1, bitmap2);
             bitmap3._Log(MathF.E * 10);
             var bitmap4 = BitmapBlend.DarkenSse(bitmap3, bitmap1);
+            var bitmap5 = BitmapBlend.Overlay(bitmap1, bitmap4);
             //string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\3M6A7233.JPG";
             //bitmapF.Log();
             //BitmapOperations.Log(bitmap1, MathF.E * 4);
-            var pictureF = bitmap4.CreateBitmap(_deviceContext);
+            var pictureF = bitmap5.CreateBitmap(_deviceContext);
             _picture = pictureF;
             //_picture = BitmapF.LoadBitmapFromFile(_wicFactory, _deviceContext, fileName);
         }

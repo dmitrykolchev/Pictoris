@@ -9,9 +9,24 @@ using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 
 namespace Managed.Graphics.Imaging;
-
-public unsafe static class BitmapBlend
+/// <summary>
+/// Режимы смешивания изображений.
+///     D = Destination(нижний слой)
+///     S = Source (исходный слой)
+///     R = Result(результат)
+///     Значения пикселей нормализованы к диапазону[0, 1]
+/// </summary>
+public static unsafe class BitmapBlend
 {
+    /// <summary>
+    /// Normal (Обычный)
+    ///     R = S × α + D × (1 - α)
+    /// </summary>
+    /// <param name="d">Destination(нижний слой)</param>
+    /// <param name="s">Source (исходный слой)</param>
+    /// <param name="alpha">прозрачность исходного слоя</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static RgbBitmap Normal(RgbBitmap d, RgbBitmap s, float alpha)
     {
         if (s.PixelWidth != d.PixelWidth || s.PixelHeight != d.PixelHeight)
@@ -30,7 +45,14 @@ public unsafe static class BitmapBlend
         }
         return r;
     }
-
+    /// <summary>
+    /// Add (Сложение)
+    /// R = min(S + D, 1)
+    /// </summary>
+    /// <param name="d">Destination(нижний слой)</param>
+    /// <param name="s">Source (исходный слой)</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static RgbBitmap Add(RgbBitmap d, RgbBitmap s)
     {
         if (s.PixelWidth != d.PixelWidth || s.PixelHeight != d.PixelHeight)
@@ -217,7 +239,7 @@ public unsafe static class BitmapBlend
             DarkenChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
             DarkenChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
 
-            static void DarkenChannel(float * d, float* s, float* r, int pixelCount)
+            static void DarkenChannel(float* d, float* s, float* r, int pixelCount)
             {
                 for (var i = 0; i < pixelCount; i += Vector256<float>.Count)
                 {
@@ -363,6 +385,47 @@ public unsafe static class BitmapBlend
             Sse.StoreAlignedNonTemporal(rR + i, rrR);
             Sse.StoreAlignedNonTemporal(rG + i, rrG);
             Sse.StoreAlignedNonTemporal(rB + i, rrB);
+        }
+        return r;
+    }
+
+    public static RgbBitmap Overlay(RgbBitmap d, RgbBitmap s)
+    {
+        var pixelWidth = s.PixelWidth;
+        var pixelHeight = s.PixelHeight;
+
+        if (pixelWidth != d.PixelWidth || pixelHeight != d.PixelHeight)
+        {
+            throw new ArgumentException("bitmap must have the same size");
+        }
+        var r = RgbBitmap.CreateUninitialized(pixelWidth, pixelHeight);
+        var pixelCount = s.PixelWidth * s.PixelHeight;
+        OverlayChannel(d.R.AsPointer(), s.R.AsPointer(), r.R.AsPointer(), pixelCount);
+        OverlayChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
+        OverlayChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
+
+        static void OverlayChannel(float* d, float* s, float* r, int pixelCount)
+        {
+            var half = Vector256.Create(0.5f);
+            var one = Vector256.Create(1.0f);
+            var two = Vector256.Create(2.0f);
+            var zero = Vector256<float>.Zero;
+
+            for (var i = 0; i < pixelCount; i += 256 / 8 / sizeof(float))
+            {
+                var dd = Avx.LoadAlignedVector256(d + i);
+                var ss = Avx.LoadAlignedVector256(s + i);
+                var mask = Avx.CompareLessThanOrEqual(dd, half);
+                var lowBranch = Avx.Multiply(Avx.Multiply(two, dd), ss);
+                var highBranch = Avx.Subtract(one,
+                    Avx.Multiply(two,
+                        Avx.Multiply(Avx.Subtract(one, dd), Avx.Subtract(one, ss))
+                    )
+                );
+                var result = Avx.BlendVariable(highBranch, lowBranch, mask);
+                result = Avx.Max(zero, Avx.Min(one, result));
+                Avx.StoreAlignedNonTemporal(r + i, result);
+            }
         }
         return r;
     }

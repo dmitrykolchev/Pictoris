@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
 
-namespace Managed.Graphics.Imaging;
+namespace Pictoris.Imaging;
 /// <summary>
 /// Режимы смешивания изображений.
 ///     D = Destination(нижний слой)

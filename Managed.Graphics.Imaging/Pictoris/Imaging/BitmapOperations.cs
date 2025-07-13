@@ -5,7 +5,7 @@
 
 using System.Numerics.Tensors;
 
-namespace Managed.Graphics.Imaging;
+namespace Pictoris.Imaging;
 
 public static class BitmapOperations
 {

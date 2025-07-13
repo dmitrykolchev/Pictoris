@@ -24,6 +24,7 @@ public partial class MainWindow : Form
 
     private float _time;
     private float _baseHue;
+    private bool _reset = true;
 
     public MainWindow()
     {
@@ -96,7 +97,11 @@ public partial class MainWindow : Form
 
         renderTarget.BeginDraw();
 
-        renderTarget.Clear(ColorF.FromKnown(KnownColors.Black));
+        if (_reset)
+        {
+            renderTarget.Clear(ColorF.FromKnown(KnownColors.Black));
+            _reset = false;
+        }
 
         var dstSize = renderTarget.Size;
 
@@ -117,7 +122,7 @@ public partial class MainWindow : Form
             var tuple = copy[index];
             using var geometry = tuple.Item1;
             using var brush = renderTarget.CreateSolidColorBrush(tuple.Item2.AdjustContrast(1.5f));
-            renderTarget.DrawGeometry(geometry, brush, 0.25f);
+            renderTarget.DrawGeometry(geometry, brush, 0.15f);
         }
         renderTarget.EndDraw();
         _swapChain!.Present(1, 0);
@@ -162,7 +167,7 @@ public partial class MainWindow : Form
             _swapChain.GetBuffer(0, out _surface);
             _bitmap = _deviceContext.CreateBitmapFromDxgiSurface(_surface, _deviceContext.DpiX, _deviceContext.DpiY);
             _deviceContext.SetTarget(_bitmap);
-            _brush = _deviceContext.CreateSolidColorBrush(ColorF.FromKnown(KnownColors.Black, 0.4f));
+            _brush = _deviceContext.CreateSolidColorBrush(ColorF.FromKnown(KnownColors.Black, 0.1f));
         }
     }
 
@@ -199,6 +204,7 @@ public partial class MainWindow : Form
 
     private void Reset()
     {
+        _reset = true;
         _time = 0.1f;
         _points = null;
         var random = new Random((int)DateTime.Now.TimeOfDay.Ticks);

@@ -6,7 +6,7 @@
 using System.Runtime.CompilerServices;
 using static Managed.Ipp.Native.Methods;
 
-namespace Managed.Graphics.Imaging;
+namespace Pictoris.Imaging;
 
 public unsafe class Channel : IDisposable
 {

@@ -4,9 +4,8 @@
 // </copyright>
 
 using BenchmarkDotNet.Attributes;
-using Managed.Graphics.Direct2d;
-using Managed.Graphics.Imaging;
 using Managed.Graphics.Wic;
+using Pictoris.Imaging;
 
 namespace Managed.Graphics.Benchmarks;
 
@@ -21,7 +20,7 @@ public class BitmapBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        WicImagingFactory factory = WicImagingFactory.CreateFactory();
+        var factory = WicImagingFactory.CreateFactory();
 
         _bitmap1 = RgbBitmap.Load(factory, @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large).JPG");
         _bitmap2 = RgbBitmap.Load(factory, @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large)_1.JPG");

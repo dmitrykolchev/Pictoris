@@ -7,8 +7,8 @@ using System.Runtime.Intrinsics;
 using Managed.Graphics;
 using Managed.Graphics.Direct2d;
 using Managed.Graphics.Dxgi;
-using Managed.Graphics.Imaging;
 using Managed.Graphics.Wic;
+using Pictoris.Imaging;
 using Dxgi = Managed.Graphics.Dxgi;
 
 namespace D2DSample;

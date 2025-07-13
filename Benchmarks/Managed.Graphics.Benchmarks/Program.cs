@@ -18,7 +18,7 @@ internal class Program
     static void Main(string[] args)
     {
 #if DEBUG
-        ColorF rgb = ColorF.FromKnown(KnownColors.Aquamarine);
+        var rgb = ColorF.FromKnown(KnownColors.Aquamarine);
         var hsl = ColorF.ToHSL(rgb.AsVector());
         var result = ColorsBenchmark.ConvertRgbToHsl(rgb.AsVector());
 #else

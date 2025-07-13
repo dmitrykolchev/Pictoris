@@ -3,12 +3,14 @@
 // See LICENSE in the project root for license information
 // </copyright>
 
+using Managed.Graphics;
 using Managed.Graphics.Direct2d;
+using Managed.Graphics.Dxgi;
 using Managed.Graphics.Wic;
 using Managed.Ipp.Native;
 using static Managed.Ipp.Native.Methods;
 
-namespace Managed.Graphics.Imaging;
+namespace Pictoris.Imaging;
 
 public unsafe class RgbBitmap : IDisposable
 {
@@ -164,7 +166,7 @@ public unsafe class RgbBitmap : IDisposable
     public Bitmap CreateBitmap(IRenderTarget renderTarget)
     {
         BitmapProperties properties = new(
-            new PixelFormat(Dxgi.DxgiFormat.B8G8R8A8_UNORM, AlphaMode.Premultiplied),
+            new PixelFormat(DxgiFormat.B8G8R8A8_UNORM, AlphaMode.Premultiplied),
             96f,
             96f);
         var buffer = AssembleBitmap();

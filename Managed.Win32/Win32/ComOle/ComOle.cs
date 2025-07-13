@@ -26365,352 +26365,637 @@ namespace Managed.Win32.ComOle
 
     public static unsafe partial class Methods
     {
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetMalloc([NativeTypeName("DWORD")] uint dwMemContext, [NativeTypeName("LPMALLOC *")] IMalloc** ppMalloc);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CreateStreamOnHGlobal([NativeTypeName("HGLOBAL")] void* hGlobal, [NativeTypeName("BOOL")] int fDeleteOnRelease, [NativeTypeName("LPSTREAM *")] IStream** ppstm);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int GetHGlobalFromStream([NativeTypeName("LPSTREAM")] IStream* pstm, [NativeTypeName("HGLOBAL *")] void** phglobal);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void CoUninitialize();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("DWORD")]
         public static extern uint CoGetCurrentProcess();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoInitializeEx([NativeTypeName("LPVOID")] void* pvReserved, [NativeTypeName("DWORD")] uint dwCoInit);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetCallerTID([NativeTypeName("LPDWORD")] uint* lpdwTID);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetCurrentLogicalThreadId(Guid* pguid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetContextToken([NativeTypeName("ULONG_PTR *")] ulong* pToken);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetDefaultContext([NativeTypeName("APTTYPE")] _APTTYPE aptType, [NativeTypeName("const IID &")] Guid* riid, void** ppv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetApartmentType([NativeTypeName("APTTYPE *")] _APTTYPE* pAptType, [NativeTypeName("APTTYPEQUALIFIER *")] _APTTYPEQUALIFIER* pAptQualifier);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoDecodeProxy([NativeTypeName("DWORD")] uint dwClientPid, [NativeTypeName("UINT64")] ulong ui64ProxyAddress, [NativeTypeName("PServerInformation")] tagServerInformation* pServerInformation);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoIncrementMTAUsage([NativeTypeName("CO_MTA_USAGE_COOKIE *")] nint** pCookie);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoDecrementMTAUsage([NativeTypeName("CO_MTA_USAGE_COOKIE")] nint* Cookie);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoAllowUnmarshalerCLSID([NativeTypeName("const IID &")] Guid* clsid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetObjectContext([NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPVOID *")] void** ppv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetClassObject([NativeTypeName("const IID &")] Guid* rclsid, [NativeTypeName("DWORD")] uint dwClsContext, [NativeTypeName("LPVOID")] void* pvReserved, [NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPVOID *")] void** ppv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoRegisterClassObject([NativeTypeName("const IID &")] Guid* rclsid, [NativeTypeName("LPUNKNOWN")] IUnknown* pUnk, [NativeTypeName("DWORD")] uint dwClsContext, [NativeTypeName("DWORD")] uint flags, [NativeTypeName("LPDWORD")] uint* lpdwRegister);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoRevokeClassObject([NativeTypeName("DWORD")] uint dwRegister);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoResumeClassObjects();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoSuspendClassObjects();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("ULONG")]
         public static extern uint CoAddRefServerProcess();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("ULONG")]
         public static extern uint CoReleaseServerProcess();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetPSClsid([NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("CLSID *")] Guid* pClsid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoRegisterPSClsid([NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("const IID &")] Guid* rclsid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoRegisterSurrogate([NativeTypeName("LPSURROGATE")] ISurrogate* pSurrogate);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetMarshalSizeMax([NativeTypeName("ULONG *")] uint* pulSize, [NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPUNKNOWN")] IUnknown* pUnk, [NativeTypeName("DWORD")] uint dwDestContext, [NativeTypeName("LPVOID")] void* pvDestContext, [NativeTypeName("DWORD")] uint mshlflags);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoMarshalInterface([NativeTypeName("LPSTREAM")] IStream* pStm, [NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPUNKNOWN")] IUnknown* pUnk, [NativeTypeName("DWORD")] uint dwDestContext, [NativeTypeName("LPVOID")] void* pvDestContext, [NativeTypeName("DWORD")] uint mshlflags);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoUnmarshalInterface([NativeTypeName("LPSTREAM")] IStream* pStm, [NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPVOID *")] void** ppv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoMarshalHresult([NativeTypeName("LPSTREAM")] IStream* pstm, [NativeTypeName("HRESULT")] int hresult);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoUnmarshalHresult([NativeTypeName("LPSTREAM")] IStream* pstm, [NativeTypeName("HRESULT *")] int* phresult);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoReleaseMarshalData([NativeTypeName("LPSTREAM")] IStream* pStm);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoDisconnectObject([NativeTypeName("LPUNKNOWN")] IUnknown* pUnk, [NativeTypeName("DWORD")] uint dwReserved);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoLockObjectExternal([NativeTypeName("LPUNKNOWN")] IUnknown* pUnk, [NativeTypeName("BOOL")] int fLock, [NativeTypeName("BOOL")] int fLastUnlockReleases);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetStandardMarshal([NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPUNKNOWN")] IUnknown* pUnk, [NativeTypeName("DWORD")] uint dwDestContext, [NativeTypeName("LPVOID")] void* pvDestContext, [NativeTypeName("DWORD")] uint mshlflags, [NativeTypeName("LPMARSHAL *")] IMarshal** ppMarshal);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetStdMarshalEx([NativeTypeName("LPUNKNOWN")] IUnknown* pUnkOuter, [NativeTypeName("DWORD")] uint smexflags, [NativeTypeName("LPUNKNOWN *")] IUnknown** ppUnkInner);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("BOOL")]
         public static extern int CoIsHandlerConnected([NativeTypeName("LPUNKNOWN")] IUnknown* pUnk);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoMarshalInterThreadInterfaceInStream([NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPUNKNOWN")] IUnknown* pUnk, [NativeTypeName("LPSTREAM *")] IStream** ppStm);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetInterfaceAndReleaseStream([NativeTypeName("LPSTREAM")] IStream* pStm, [NativeTypeName("const IID &")] Guid* iid, [NativeTypeName("LPVOID *")] void** ppv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoCreateFreeThreadedMarshaler([NativeTypeName("LPUNKNOWN")] IUnknown* punkOuter, [NativeTypeName("LPUNKNOWN *")] IUnknown** ppunkMarshal);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void CoFreeUnusedLibraries();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void CoFreeUnusedLibrariesEx([NativeTypeName("DWORD")] uint dwUnloadDelay, [NativeTypeName("DWORD")] uint dwReserved);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoDisconnectContext([NativeTypeName("DWORD")] uint dwTimeout);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoInitializeSecurity([NativeTypeName("PSECURITY_DESCRIPTOR")] void* pSecDesc, [NativeTypeName("LONG")] int cAuthSvc, [NativeTypeName("SOLE_AUTHENTICATION_SERVICE *")] tagSOLE_AUTHENTICATION_SERVICE* asAuthSvc, void* pReserved1, [NativeTypeName("DWORD")] uint dwAuthnLevel, [NativeTypeName("DWORD")] uint dwImpLevel, void* pAuthList, [NativeTypeName("DWORD")] uint dwCapabilities, void* pReserved3);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetCallContext([NativeTypeName("const IID &")] Guid* riid, void** ppInterface);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoQueryProxyBlanket(IUnknown* pProxy, [NativeTypeName("DWORD *")] uint* pwAuthnSvc, [NativeTypeName("DWORD *")] uint* pAuthzSvc, [NativeTypeName("LPOLESTR *")] char** pServerPrincName, [NativeTypeName("DWORD *")] uint* pAuthnLevel, [NativeTypeName("DWORD *")] uint* pImpLevel, [NativeTypeName("RPC_AUTH_IDENTITY_HANDLE *")] void** pAuthInfo, [NativeTypeName("DWORD *")] uint* pCapabilites);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoSetProxyBlanket(IUnknown* pProxy, [NativeTypeName("DWORD")] uint dwAuthnSvc, [NativeTypeName("DWORD")] uint dwAuthzSvc, [NativeTypeName("OLECHAR *")] char* pServerPrincName, [NativeTypeName("DWORD")] uint dwAuthnLevel, [NativeTypeName("DWORD")] uint dwImpLevel, [NativeTypeName("RPC_AUTH_IDENTITY_HANDLE")] void* pAuthInfo, [NativeTypeName("DWORD")] uint dwCapabilities);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoCopyProxy(IUnknown* pProxy, IUnknown** ppCopy);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoQueryClientBlanket([NativeTypeName("DWORD *")] uint* pAuthnSvc, [NativeTypeName("DWORD *")] uint* pAuthzSvc, [NativeTypeName("LPOLESTR *")] char** pServerPrincName, [NativeTypeName("DWORD *")] uint* pAuthnLevel, [NativeTypeName("DWORD *")] uint* pImpLevel, [NativeTypeName("RPC_AUTHZ_HANDLE *")] void** pPrivs, [NativeTypeName("DWORD *")] uint* pCapabilities);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoImpersonateClient();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoRevertToSelf();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoQueryAuthenticationServices([NativeTypeName("DWORD *")] uint* pcAuthSvc, [NativeTypeName("SOLE_AUTHENTICATION_SERVICE **")] tagSOLE_AUTHENTICATION_SERVICE** asAuthSvc);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoSwitchCallContext(IUnknown* pNewObject, IUnknown** ppOldObject);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoCreateInstance([NativeTypeName("const IID &")] Guid* rclsid, [NativeTypeName("LPUNKNOWN")] IUnknown* pUnkOuter, [NativeTypeName("DWORD")] uint dwClsContext, [NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPVOID *")] void** ppv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoCreateInstanceEx([NativeTypeName("const IID &")] Guid* Clsid, IUnknown* punkOuter, [NativeTypeName("DWORD")] uint dwClsCtx, [NativeTypeName("COSERVERINFO *")] _COSERVERINFO* pServerInfo, [NativeTypeName("DWORD")] uint dwCount, [NativeTypeName("MULTI_QI *")] tagMULTI_QI* pResults);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoCreateInstanceFromApp([NativeTypeName("const IID &")] Guid* Clsid, IUnknown* punkOuter, [NativeTypeName("DWORD")] uint dwClsCtx, [NativeTypeName("PVOID")] void* reserved, [NativeTypeName("DWORD")] uint dwCount, [NativeTypeName("MULTI_QI *")] tagMULTI_QI* pResults);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoRegisterActivationFilter(IActivationFilter* pActivationFilter);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetCancelObject([NativeTypeName("DWORD")] uint dwThreadId, [NativeTypeName("const IID &")] Guid* iid, void** ppUnk);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoSetCancelObject(IUnknown* pUnk);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoCancelCall([NativeTypeName("DWORD")] uint dwThreadId, [NativeTypeName("ULONG")] uint ulTimeout);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoTestCancel();
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoEnableCallCancellation([NativeTypeName("LPVOID")] void* pReserved);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoDisableCallCancellation([NativeTypeName("LPVOID")] void* pReserved);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int StringFromCLSID([NativeTypeName("const IID &")] Guid* rclsid, [NativeTypeName("LPOLESTR *")] char** lplpsz);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CLSIDFromString([NativeTypeName("LPCOLESTR")] char* lpsz, [NativeTypeName("LPCLSID")] Guid* pclsid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int StringFromIID([NativeTypeName("const IID &")] Guid* rclsid, [NativeTypeName("LPOLESTR *")] char** lplpsz);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int IIDFromString([NativeTypeName("LPCOLESTR")] char* lpsz, [NativeTypeName("LPIID")] Guid* lpiid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int ProgIDFromCLSID([NativeTypeName("const IID &")] Guid* clsid, [NativeTypeName("LPOLESTR *")] char** lplpszProgID);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CLSIDFromProgID([NativeTypeName("LPCOLESTR")] char* lpszProgID, [NativeTypeName("LPCLSID")] Guid* lpclsid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern int StringFromGUID2([NativeTypeName("const GUID &")] Guid* rguid, [NativeTypeName("LPOLESTR")] char* lpsz, int cchMax);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoCreateGuid(Guid* pguid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int PropVariantCopy(PROPVARIANT* pvarDest, [NativeTypeName("const PROPVARIANT *")] PROPVARIANT* pvarSrc);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int PropVariantClear(PROPVARIANT* pvar);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int FreePropVariantArray([NativeTypeName("ULONG")] uint cVariants, PROPVARIANT* rgvars);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoWaitForMultipleHandles([NativeTypeName("DWORD")] uint dwFlags, [NativeTypeName("DWORD")] uint dwTimeout, [NativeTypeName("ULONG")] uint cHandles, [NativeTypeName("LPHANDLE")] void** pHandles, [NativeTypeName("LPDWORD")] uint* lpdwindex);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoWaitForMultipleObjects([NativeTypeName("DWORD")] uint dwFlags, [NativeTypeName("DWORD")] uint dwTimeout, [NativeTypeName("ULONG")] uint cHandles, [NativeTypeName("const HANDLE *")] void** pHandles, [NativeTypeName("LPDWORD")] uint* lpdwindex);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoGetTreatAsClass([NativeTypeName("const IID &")] Guid* clsidOld, [NativeTypeName("LPCLSID")] Guid* pClsidNew);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoInvalidateRemoteMachineBindings([NativeTypeName("LPOLESTR")] char* pszMachineName);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int RoGetAgileReference([NativeTypeName("enum AgileReferenceOptions")] AgileReferenceOptions options, [NativeTypeName("const IID &")] Guid* riid, IUnknown* pUnk, IAgileReference** ppAgileReference);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int DllGetClassObject([NativeTypeName("const IID &")] Guid* rclsid, [NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("LPVOID *")] void** ppv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
-        [return: NativeTypeName("HRESULT")]
-        public static extern int DllCanUnloadNow();
-
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("LPVOID")]
         public static extern void* CoTaskMemAlloc([NativeTypeName("SIZE_T")] ulong cb);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("LPVOID")]
         public static extern void* CoTaskMemRealloc([NativeTypeName("LPVOID")] void* pv, [NativeTypeName("SIZE_T")] ulong cb);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void CoTaskMemFree([NativeTypeName("LPVOID")] void* pv);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CoFileTimeNow(FILETIME* lpFileTime);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("ole32", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int CLSIDFromProgIDEx([NativeTypeName("LPCOLESTR")] char* lpszProgID, [NativeTypeName("LPCLSID")] Guid* lpclsid);
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
-        [return: NativeTypeName("HRESULT")]
-        public static extern int CoRegisterDeviceCatalog([NativeTypeName("PCWSTR")] char* deviceInstanceId, [NativeTypeName("CO_DEVICE_CATALOG_COOKIE *")] nint** cookie);
+        [NativeTypeName("#define CLSCTX_INPROC (CLSCTX_INPROC_SERVER|CLSCTX_INPROC_HANDLER)")]
+        public const int CLSCTX_INPROC = ((int)(CLSCTX.CLSCTX_INPROC_SERVER) | (int)(CLSCTX.CLSCTX_INPROC_HANDLER));
 
-        [DllImport("Ole32.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
-        [return: NativeTypeName("HRESULT")]
-        public static extern int CoRevokeDeviceCatalog([NativeTypeName("CO_DEVICE_CATALOG_COOKIE")] nint* cookie);
+        [NativeTypeName("#define CLSCTX_ALL (CLSCTX_INPROC_SERVER| \\\r\n                                 CLSCTX_INPROC_HANDLER| \\\r\n                                 CLSCTX_LOCAL_SERVER| \\\r\n                                 CLSCTX_REMOTE_SERVER)")]
+        public const int CLSCTX_ALL = ((int)(CLSCTX.CLSCTX_INPROC_SERVER) | (int)(CLSCTX.CLSCTX_INPROC_HANDLER) | (int)(CLSCTX.CLSCTX_LOCAL_SERVER) | (int)(CLSCTX.CLSCTX_REMOTE_SERVER));
+
+        [NativeTypeName("#define CLSCTX_SERVER (CLSCTX_INPROC_SERVER|CLSCTX_LOCAL_SERVER|CLSCTX_REMOTE_SERVER)")]
+        public const int CLSCTX_SERVER = ((int)(CLSCTX.CLSCTX_INPROC_SERVER) | (int)(CLSCTX.CLSCTX_LOCAL_SERVER) | (int)(CLSCTX.CLSCTX_REMOTE_SERVER));
+
+        [NativeTypeName("#define COLE_DEFAULT_PRINCIPAL ( ( OLECHAR * )( INT_PTR  )-1 )")]
+        public static char* COLE_DEFAULT_PRINCIPAL => unchecked((char*)((nint)(-1)));
+
+        [NativeTypeName("#define COLE_DEFAULT_AUTHINFO ( ( void * )( INT_PTR  )-1 )")]
+        public static void* COLE_DEFAULT_AUTHINFO => unchecked((void*)((nint)(-1)));
+
+        [NativeTypeName("#define _CRT_INTERNAL_COMBASE_SYMBOL_PREFIX \"\"")]
+        public static ReadOnlySpan<byte> _CRT_INTERNAL_COMBASE_SYMBOL_PREFIX => ""u8;
+
+        [NativeTypeName("#define COM_RIGHTS_EXECUTE 1")]
+        public const int COM_RIGHTS_EXECUTE = 1;
+
+        [NativeTypeName("#define COM_RIGHTS_EXECUTE_LOCAL 2")]
+        public const int COM_RIGHTS_EXECUTE_LOCAL = 2;
+
+        [NativeTypeName("#define COM_RIGHTS_EXECUTE_REMOTE 4")]
+        public const int COM_RIGHTS_EXECUTE_REMOTE = 4;
+
+        [NativeTypeName("#define COM_RIGHTS_ACTIVATE_LOCAL 8")]
+        public const int COM_RIGHTS_ACTIVATE_LOCAL = 8;
+
+        [NativeTypeName("#define COM_RIGHTS_ACTIVATE_REMOTE 16")]
+        public const int COM_RIGHTS_ACTIVATE_REMOTE = 16;
+
+        [NativeTypeName("#define COM_RIGHTS_RESERVED1 32")]
+        public const int COM_RIGHTS_RESERVED1 = 32;
+
+        [NativeTypeName("#define COM_RIGHTS_RESERVED2 64")]
+        public const int COM_RIGHTS_RESERVED2 = 64;
+
+        [NativeTypeName("#define CWMO_MAX_HANDLES 56")]
+        public const int CWMO_MAX_HANDLES = 56;
+
+        [NativeTypeName("#define FADF_AUTO ( 0x1 )")]
+        public const int FADF_AUTO = (0x1);
+
+        [NativeTypeName("#define FADF_STATIC ( 0x2 )")]
+        public const int FADF_STATIC = (0x2);
+
+        [NativeTypeName("#define FADF_EMBEDDED ( 0x4 )")]
+        public const int FADF_EMBEDDED = (0x4);
+
+        [NativeTypeName("#define FADF_FIXEDSIZE ( 0x10 )")]
+        public const int FADF_FIXEDSIZE = (0x10);
+
+        [NativeTypeName("#define FADF_RECORD ( 0x20 )")]
+        public const int FADF_RECORD = (0x20);
+
+        [NativeTypeName("#define FADF_HAVEIID ( 0x40 )")]
+        public const int FADF_HAVEIID = (0x40);
+
+        [NativeTypeName("#define FADF_HAVEVARTYPE ( 0x80 )")]
+        public const int FADF_HAVEVARTYPE = (0x80);
+
+        [NativeTypeName("#define FADF_BSTR ( 0x100 )")]
+        public const int FADF_BSTR = (0x100);
+
+        [NativeTypeName("#define FADF_UNKNOWN ( 0x200 )")]
+        public const int FADF_UNKNOWN = (0x200);
+
+        [NativeTypeName("#define FADF_DISPATCH ( 0x400 )")]
+        public const int FADF_DISPATCH = (0x400);
+
+        [NativeTypeName("#define FADF_VARIANT ( 0x800 )")]
+        public const int FADF_VARIANT = (0x800);
+
+        [NativeTypeName("#define FADF_RESERVED ( 0xf008 )")]
+        public const int FADF_RESERVED = (0xf008);
+
+        [NativeTypeName("#define PARAMFLAG_NONE ( 0 )")]
+        public const int PARAMFLAG_NONE = (0);
+
+        [NativeTypeName("#define PARAMFLAG_FIN ( 0x1 )")]
+        public const int PARAMFLAG_FIN = (0x1);
+
+        [NativeTypeName("#define PARAMFLAG_FOUT ( 0x2 )")]
+        public const int PARAMFLAG_FOUT = (0x2);
+
+        [NativeTypeName("#define PARAMFLAG_FLCID ( 0x4 )")]
+        public const int PARAMFLAG_FLCID = (0x4);
+
+        [NativeTypeName("#define PARAMFLAG_FRETVAL ( 0x8 )")]
+        public const int PARAMFLAG_FRETVAL = (0x8);
+
+        [NativeTypeName("#define PARAMFLAG_FOPT ( 0x10 )")]
+        public const int PARAMFLAG_FOPT = (0x10);
+
+        [NativeTypeName("#define PARAMFLAG_FHASDEFAULT ( 0x20 )")]
+        public const int PARAMFLAG_FHASDEFAULT = (0x20);
+
+        [NativeTypeName("#define PARAMFLAG_FHASCUSTDATA ( 0x40 )")]
+        public const int PARAMFLAG_FHASCUSTDATA = (0x40);
+
+        [NativeTypeName("#define IDLFLAG_NONE ( PARAMFLAG_NONE )")]
+        public const int IDLFLAG_NONE = ((0));
+
+        [NativeTypeName("#define IDLFLAG_FIN ( PARAMFLAG_FIN )")]
+        public const int IDLFLAG_FIN = ((0x1));
+
+        [NativeTypeName("#define IDLFLAG_FOUT ( PARAMFLAG_FOUT )")]
+        public const int IDLFLAG_FOUT = ((0x2));
+
+        [NativeTypeName("#define IDLFLAG_FLCID ( PARAMFLAG_FLCID )")]
+        public const int IDLFLAG_FLCID = ((0x4));
+
+        [NativeTypeName("#define IDLFLAG_FRETVAL ( PARAMFLAG_FRETVAL )")]
+        public const int IDLFLAG_FRETVAL = ((0x8));
+
+        [NativeTypeName("#define IMPLTYPEFLAG_FDEFAULT ( 0x1 )")]
+        public const int IMPLTYPEFLAG_FDEFAULT = (0x1);
+
+        [NativeTypeName("#define IMPLTYPEFLAG_FSOURCE ( 0x2 )")]
+        public const int IMPLTYPEFLAG_FSOURCE = (0x2);
+
+        [NativeTypeName("#define IMPLTYPEFLAG_FRESTRICTED ( 0x4 )")]
+        public const int IMPLTYPEFLAG_FRESTRICTED = (0x4);
+
+        [NativeTypeName("#define IMPLTYPEFLAG_FDEFAULTVTABLE ( 0x8 )")]
+        public const int IMPLTYPEFLAG_FDEFAULTVTABLE = (0x8);
+
+        [NativeTypeName("#define DISPID_UNKNOWN ( -1 )")]
+        public const int DISPID_UNKNOWN = (-1);
+
+        [NativeTypeName("#define DISPID_VALUE ( 0 )")]
+        public const int DISPID_VALUE = (0);
+
+        [NativeTypeName("#define DISPID_PROPERTYPUT ( -3 )")]
+        public const int DISPID_PROPERTYPUT = (-3);
+
+        [NativeTypeName("#define DISPID_NEWENUM ( -4 )")]
+        public const int DISPID_NEWENUM = (-4);
+
+        [NativeTypeName("#define DISPID_EVALUATE ( -5 )")]
+        public const int DISPID_EVALUATE = (-5);
+
+        [NativeTypeName("#define DISPID_CONSTRUCTOR ( -6 )")]
+        public const int DISPID_CONSTRUCTOR = (-6);
+
+        [NativeTypeName("#define DISPID_DESTRUCTOR ( -7 )")]
+        public const int DISPID_DESTRUCTOR = (-7);
+
+        [NativeTypeName("#define DISPID_COLLECT ( -8 )")]
+        public const int DISPID_COLLECT = (-8);
+
+        [NativeTypeName("#define PROPSETFLAG_DEFAULT ( 0 )")]
+        public const int PROPSETFLAG_DEFAULT = (0);
+
+        [NativeTypeName("#define PROPSETFLAG_NONSIMPLE ( 1 )")]
+        public const int PROPSETFLAG_NONSIMPLE = (1);
+
+        [NativeTypeName("#define PROPSETFLAG_ANSI ( 2 )")]
+        public const int PROPSETFLAG_ANSI = (2);
+
+        [NativeTypeName("#define PROPSETFLAG_UNBUFFERED ( 4 )")]
+        public const int PROPSETFLAG_UNBUFFERED = (4);
+
+        [NativeTypeName("#define PROPSETFLAG_CASE_SENSITIVE ( 8 )")]
+        public const int PROPSETFLAG_CASE_SENSITIVE = (8);
+
+        [NativeTypeName("#define PROPSET_BEHAVIOR_CASE_SENSITIVE ( 1 )")]
+        public const int PROPSET_BEHAVIOR_CASE_SENSITIVE = (1);
+
+        [NativeTypeName("#define PID_DICTIONARY ( 0 )")]
+        public const int PID_DICTIONARY = (0);
+
+        [NativeTypeName("#define PID_CODEPAGE ( 0x1 )")]
+        public const int PID_CODEPAGE = (0x1);
+
+        [NativeTypeName("#define PID_FIRST_USABLE ( 0x2 )")]
+        public const int PID_FIRST_USABLE = (0x2);
+
+        [NativeTypeName("#define PID_FIRST_NAME_DEFAULT ( 0xfff )")]
+        public const int PID_FIRST_NAME_DEFAULT = (0xfff);
+
+        [NativeTypeName("#define PID_LOCALE ( 0x80000000 )")]
+        public const uint PID_LOCALE = (0x80000000);
+
+        [NativeTypeName("#define PID_MODIFY_TIME ( 0x80000001 )")]
+        public const uint PID_MODIFY_TIME = (0x80000001);
+
+        [NativeTypeName("#define PID_SECURITY ( 0x80000002 )")]
+        public const uint PID_SECURITY = (0x80000002);
+
+        [NativeTypeName("#define PID_BEHAVIOR ( 0x80000003 )")]
+        public const uint PID_BEHAVIOR = (0x80000003);
+
+        [NativeTypeName("#define PID_ILLEGAL ( 0xffffffff )")]
+        public const uint PID_ILLEGAL = (0xffffffff);
+
+        [NativeTypeName("#define PID_MIN_READONLY ( 0x80000000 )")]
+        public const uint PID_MIN_READONLY = (0x80000000);
+
+        [NativeTypeName("#define PID_MAX_READONLY ( 0xbfffffff )")]
+        public const uint PID_MAX_READONLY = (0xbfffffff);
+
+        [NativeTypeName("#define PRSPEC_INVALID ( 0xffffffff )")]
+        public const uint PRSPEC_INVALID = (0xffffffff);
+
+        [NativeTypeName("#define PRSPEC_LPWSTR ( 0 )")]
+        public const int PRSPEC_LPWSTR = (0);
+
+        [NativeTypeName("#define PRSPEC_PROPID ( 1 )")]
+        public const int PRSPEC_PROPID = (1);
+
+        [NativeTypeName("#define PROPSETHDR_OSVERSION_UNKNOWN 0xFFFFFFFF")]
+        public const uint PROPSETHDR_OSVERSION_UNKNOWN = 0xFFFFFFFF;
+
+        [NativeTypeName("#define UPDFCACHE_NODATACACHE ( 0x1 )")]
+        public const int UPDFCACHE_NODATACACHE = (0x1);
+
+        [NativeTypeName("#define UPDFCACHE_ONSAVECACHE ( 0x2 )")]
+        public const int UPDFCACHE_ONSAVECACHE = (0x2);
+
+        [NativeTypeName("#define UPDFCACHE_ONSTOPCACHE ( 0x4 )")]
+        public const int UPDFCACHE_ONSTOPCACHE = (0x4);
+
+        [NativeTypeName("#define UPDFCACHE_NORMALCACHE ( 0x8 )")]
+        public const int UPDFCACHE_NORMALCACHE = (0x8);
+
+        [NativeTypeName("#define UPDFCACHE_IFBLANK ( 0x10 )")]
+        public const int UPDFCACHE_IFBLANK = (0x10);
+
+        [NativeTypeName("#define UPDFCACHE_ONLYIFBLANK ( 0x80000000 )")]
+        public const uint UPDFCACHE_ONLYIFBLANK = (0x80000000);
+
+        [NativeTypeName("#define UPDFCACHE_IFBLANKORONSAVECACHE ( ( UPDFCACHE_IFBLANK | UPDFCACHE_ONSAVECACHE )  )")]
+        public const int UPDFCACHE_IFBLANKORONSAVECACHE = (((0x10) | (0x2)));
+
+        [NativeTypeName("#define UPDFCACHE_ALL ( ( DWORD  )~UPDFCACHE_ONLYIFBLANK )")]
+        public const uint UPDFCACHE_ALL = ((uint)(~(0x80000000)));
+
+        [NativeTypeName("#define UPDFCACHE_ALLBUTNODATACACHE ( ( UPDFCACHE_ALL & ( DWORD  )~UPDFCACHE_NODATACACHE )  )")]
+        public const uint UPDFCACHE_ALLBUTNODATACACHE = unchecked((((uint)(~(0x80000000))) & (uint)(~(0x1))));
+
+        [NativeTypeName("#define MK_ALT ( 0x20 )")]
+        public const int MK_ALT = (0x20);
+
+        [NativeTypeName("#define DROPEFFECT_NONE ( 0 )")]
+        public const int DROPEFFECT_NONE = (0);
+
+        [NativeTypeName("#define DROPEFFECT_COPY ( 1 )")]
+        public const int DROPEFFECT_COPY = (1);
+
+        [NativeTypeName("#define DROPEFFECT_MOVE ( 2 )")]
+        public const int DROPEFFECT_MOVE = (2);
+
+        [NativeTypeName("#define DROPEFFECT_LINK ( 4 )")]
+        public const int DROPEFFECT_LINK = (4);
+
+        [NativeTypeName("#define DROPEFFECT_SCROLL ( 0x80000000 )")]
+        public const uint DROPEFFECT_SCROLL = (0x80000000);
+
+        [NativeTypeName("#define DD_DEFSCROLLINSET ( 11 )")]
+        public const int DD_DEFSCROLLINSET = (11);
+
+        [NativeTypeName("#define DD_DEFSCROLLDELAY ( 50 )")]
+        public const int DD_DEFSCROLLDELAY = (50);
+
+        [NativeTypeName("#define DD_DEFSCROLLINTERVAL ( 50 )")]
+        public const int DD_DEFSCROLLINTERVAL = (50);
+
+        [NativeTypeName("#define DD_DEFDRAGDELAY ( 200 )")]
+        public const int DD_DEFDRAGDELAY = (200);
+
+        [NativeTypeName("#define DD_DEFDRAGMINDIST ( 2 )")]
+        public const int DD_DEFDRAGMINDIST = (2);
+
+        [NativeTypeName("#define CFSTR_ENTERPRISE_ID (TEXT(\"EnterpriseDataProtectionId\"))")]
+        public static ReadOnlySpan<byte> CFSTR_ENTERPRISE_ID => ("EnterpriseDataProtectionId"u8);
+
+        [NativeTypeName("#define MULTICLASSINFO_GETTYPEINFO 0x00000001")]
+        public const int MULTICLASSINFO_GETTYPEINFO = 0x00000001;
+
+        [NativeTypeName("#define MULTICLASSINFO_GETNUMRESERVEDDISPIDS 0x00000002")]
+        public const int MULTICLASSINFO_GETNUMRESERVEDDISPIDS = 0x00000002;
+
+        [NativeTypeName("#define MULTICLASSINFO_GETIIDPRIMARY 0x00000004")]
+        public const int MULTICLASSINFO_GETIIDPRIMARY = 0x00000004;
+
+        [NativeTypeName("#define MULTICLASSINFO_GETIIDSOURCE 0x00000008")]
+        public const int MULTICLASSINFO_GETIIDSOURCE = 0x00000008;
+
+        [NativeTypeName("#define TIFLAGS_EXTENDDISPATCHONLY 0x00000001")]
+        public const int TIFLAGS_EXTENDDISPATCHONLY = 0x00000001;
+
+        [NativeTypeName("#define SID_SOleUndoManager IID_IOleUndoManager")]
+        public static ref readonly Guid SID_SOleUndoManager => ref IID_IOleUndoManager;
 
         public static ref readonly Guid IID_IUnknown
         {

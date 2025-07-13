@@ -25460,9 +25460,24 @@ namespace Managed.Win32.Graphics.DirectWrite
 
     public static unsafe partial class Methods
     {
-        [DllImport("dwrite.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("dwrite", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int DWriteCreateFactory(DWRITE_FACTORY_TYPE factoryType, [NativeTypeName("const IID &")] Guid* iid, IUnknown** factory);
+
+        [NativeTypeName("#define DWRITE_ALPHA_MAX 255")]
+        public const int DWRITE_ALPHA_MAX = 255;
+
+        [NativeTypeName("#define FACILITY_DWRITE 0x898")]
+        public const int FACILITY_DWRITE = 0x898;
+
+        [NativeTypeName("#define DWRITE_ERR_BASE 0x5000")]
+        public const int DWRITE_ERR_BASE = 0x5000;
+
+        [NativeTypeName("#define DWRITE_NO_PALETTE_INDEX 0xFFFF")]
+        public const int DWRITE_NO_PALETTE_INDEX = 0xFFFF;
+
+        [NativeTypeName("#define DWRITE_STANDARD_FONT_AXIS_COUNT 5")]
+        public const int DWRITE_STANDARD_FONT_AXIS_COUNT = 5;
 
         public static ref readonly Guid IID_IDWriteFontFileLoader
         {

@@ -30493,50 +30493,65 @@ namespace Managed.Win32.Graphics.Direct2d
 
     public static unsafe partial class Methods
     {
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int D2D1CreateFactory(D2D1_FACTORY_TYPE factoryType, [NativeTypeName("const IID &")] Guid* riid, [NativeTypeName("const D2D1_FACTORY_OPTIONS *")] D2D1_FACTORY_OPTIONS* pFactoryOptions, void** ppIFactory);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void D2D1MakeRotateMatrix(float angle, [NativeTypeName("D2D1_POINT_2F")] D2D_POINT_2F center, [NativeTypeName("D2D1_MATRIX_3X2_F *")] D2D_MATRIX_3X2_F* matrix);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void D2D1MakeSkewMatrix(float angleX, float angleY, [NativeTypeName("D2D1_POINT_2F")] D2D_POINT_2F center, [NativeTypeName("D2D1_MATRIX_3X2_F *")] D2D_MATRIX_3X2_F* matrix);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("BOOL")]
         public static extern int D2D1IsMatrixInvertible([NativeTypeName("const D2D1_MATRIX_3X2_F *")] D2D_MATRIX_3X2_F* matrix);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("BOOL")]
         public static extern int D2D1InvertMatrix([NativeTypeName("D2D1_MATRIX_3X2_F *")] D2D_MATRIX_3X2_F* matrix);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int D2D1CreateDevice(IDXGIDevice* dxgiDevice, [NativeTypeName("const D2D1_CREATION_PROPERTIES *")] D2D1_CREATION_PROPERTIES* creationProperties, ID2D1Device** d2dDevice);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("HRESULT")]
         public static extern int D2D1CreateDeviceContext(IDXGISurface* dxgiSurface, [NativeTypeName("const D2D1_CREATION_PROPERTIES *")] D2D1_CREATION_PROPERTIES* creationProperties, ID2D1DeviceContext** d2dDeviceContext);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         [return: NativeTypeName("D2D1_COLOR_F")]
         public static extern _D3DCOLORVALUE D2D1ConvertColorSpace(D2D1_COLOR_SPACE sourceColorSpace, D2D1_COLOR_SPACE destinationColorSpace, [NativeTypeName("const D2D1_COLOR_F *")] _D3DCOLORVALUE* color);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void D2D1SinCos(float angle, float* s, float* c);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern float D2D1Tan(float angle);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern float D2D1Vec3Length(float x, float y, float z);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern float D2D1ComputeMaximumScaleFactor([NativeTypeName("const D2D1_MATRIX_3X2_F *")] D2D_MATRIX_3X2_F* matrix);
 
-        [DllImport("d2d1.dll", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        [DllImport("d2d1", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         public static extern void D2D1GetGradientMeshInteriorPointsFromCoonsPatch([NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint0, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint1, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint2, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint3, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint4, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint5, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint6, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint7, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint8, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint9, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint10, [NativeTypeName("const D2D1_POINT_2F *")] D2D_POINT_2F* pPoint11, [NativeTypeName("D2D1_POINT_2F *")] D2D_POINT_2F* pTensorPoint11, [NativeTypeName("D2D1_POINT_2F *")] D2D_POINT_2F* pTensorPoint12, [NativeTypeName("D2D1_POINT_2F *")] D2D_POINT_2F* pTensorPoint21, [NativeTypeName("D2D1_POINT_2F *")] D2D_POINT_2F* pTensorPoint22);
+
+        [NativeTypeName("#define D2D1_INVALID_TAG ULONGLONG_MAX")]
+        public const ulong D2D1_INVALID_TAG = 0xffffffffffffffffUL;
+
+        [NativeTypeName("#define D2D1_DEFAULT_FLATTENING_TOLERANCE (0.25f)")]
+        public const float D2D1_DEFAULT_FLATTENING_TOLERANCE = (0.25f);
+
+        [NativeTypeName("#define D2D1_INVALID_PROPERTY_INDEX UINT_MAX")]
+        public const uint D2D1_INVALID_PROPERTY_INDEX = 0xffffffff;
+
+        [NativeTypeName("#define D2D1_APPEND_ALIGNED_ELEMENT ( 0xffffffff )")]
+        public const uint D2D1_APPEND_ALIGNED_ELEMENT = (0xffffffff);
+
+        [NativeTypeName("#define D2D1_SCENE_REFERRED_SDR_WHITE_LEVEL 80.0f")]
+        public const float D2D1_SCENE_REFERRED_SDR_WHITE_LEVEL = 80.0f;
 
         public static ref readonly Guid IID_ID2D1Resource
         {

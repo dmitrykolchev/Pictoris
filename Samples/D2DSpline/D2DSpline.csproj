@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Managed.Graphics.Imaging\Managed.Graphics.Imaging.csproj" />
+    <ProjectReference Include="..\..\Managed.Graphics\Managed.Graphics.csproj" />
+  </ItemGroup>
+
+</Project>

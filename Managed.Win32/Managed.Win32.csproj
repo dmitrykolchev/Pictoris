@@ -32,4 +32,8 @@
 		<Using Include="Managed.Win32.Graphics.Imaging" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Win32\Xps\" />
+	</ItemGroup>
+
 </Project>

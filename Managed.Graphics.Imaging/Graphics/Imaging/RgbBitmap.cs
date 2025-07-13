@@ -5,43 +5,76 @@
 
 using Managed.Graphics.Direct2d;
 using Managed.Graphics.Wic;
+using Managed.Ipp.Native;
+using static Managed.Ipp.Native.Methods;
 
 namespace Managed.Graphics.Imaging;
 
 public unsafe class RgbBitmap : IDisposable
 {
-    private readonly Channel[] _channels;
+    private readonly Channel _r;
+    private readonly Channel _g;
+    private readonly Channel _b;
 
     private RgbBitmap(int pixelWidth, int pixelHeight, ReadOnlySpan<byte> pixelBuffer) :
         this(pixelWidth, pixelHeight)
     {
-        var ptrR = _channels[unchecked((int)RGBA.R)].AsPointer();
-        var ptrG = _channels[unchecked((int)RGBA.G)].AsPointer();
-        var ptrB = _channels[unchecked((int)RGBA.B)].AsPointer();
+        int status;
+        var roiSize = new IppiSize { height = pixelHeight, width = pixelWidth };
 
-        fixed (byte* ptrSrc = pixelBuffer)
+        // 3. Временные буферы для промежуточного хранения Ipp8u плоскостей
+        var red8uStep = 0;
+        var pRed8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &red8uStep);
+        var green8uStep = 0;
+        var pGreen8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &green8uStep);
+        var blue8uStep = 0;
+        var pBlue8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &blue8uStep);
+        var alpha8uStep = 0;
+        var pAlpha8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &alpha8uStep);
+
+        // 4. Разделение пиксельного изображения на плоскости (Ipp8u_P3)
+        var dstPlanes = new byte*[] { pRed8u, pGreen8u, pBlue8u, pAlpha8u };
+        fixed (byte* pSrcImage = pixelBuffer)
+        fixed (byte** pdstPlanes = &dstPlanes[0])
         {
-            var pixelCount = (pixelWidth * pixelHeight + 3) & ~3;
-            for (var index = 0; index < pixelCount; ++index)
+            var srcStep = pixelWidth * 4;
+            status = ippiCopy_8u_C4P4R(pSrcImage, srcStep, pdstPlanes, red8uStep, roiSize);
+            if (status != 0)
             {
-                var r = (float)pixelBuffer[index * 4 + unchecked((int)RGBA.R)] / (float)(byte.MaxValue);
-                var g = (float)pixelBuffer[index * 4 + unchecked((int)RGBA.G)] / (float)(byte.MaxValue);
-                var b = (float)pixelBuffer[index * 4 + unchecked((int)RGBA.B)] / (float)(byte.MaxValue);
-                ptrR[index] = r;
-                ptrG[index] = g;
-                ptrB[index] = b;
+                throw new InvalidOperationException("Failed to copy C3 to P3");
             }
         }
+
+        // 5. масштабирование значений из [0, 255] в [0.0, 1.0]
+        status = ippiScale_8u32f_C1R(pRed8u, red8uStep, _r.AsPointer(), _r.StepBytes, roiSize, 0f, 1f);
+        if (status != 0)
+        {
+            throw new InvalidOperationException("Failed to scale Red plane");
+        }
+        status = ippiScale_8u32f_C1R(pGreen8u, green8uStep, _g.AsPointer(), _g.StepBytes, roiSize, 0f, 1f);
+        if (status != 0)
+        {
+            throw new InvalidOperationException("Failed to scale Green plane");
+        }
+        status = ippiScale_8u32f_C1R(pBlue8u, blue8uStep, _b.AsPointer(), _b.StepBytes, roiSize, 0f, 1f);
+        if (status != 0)
+        {
+            throw new InvalidOperationException("Failed to scale Red plane");
+        }
+
+        ippiFree(pRed8u);
+        ippiFree(pGreen8u);
+        ippiFree(pBlue8u);
     }
 
     private RgbBitmap(int pixelWidth, int pixelHeight, float r, float g, float b) :
         this(pixelWidth, pixelHeight)
     {
-        var ptrR = _channels[0].AsPointer();
-        var ptrG = _channels[1].AsPointer();
-        var ptrB = _channels[2].AsPointer();
+        var ptrR = _r.AsPointer();
+        var ptrG = _g.AsPointer();
+        var ptrB = _b.AsPointer();
 
-        var pixelCount = _channels.Length;
+        var pixelCount = _r.Length;
         for (var index = 0; index < pixelCount; ++index)
         {
             ptrR[index] = r;
@@ -54,25 +87,22 @@ public unsafe class RgbBitmap : IDisposable
     {
         PixelWidth = pixelWidth;
         PixelHeight = pixelHeight;
-        _channels = new Channel[3];
-        _channels[unchecked((int)RGBA.R)] = new(pixelWidth, pixelHeight);
-        _channels[unchecked((int)RGBA.G)] = new(pixelWidth, pixelHeight);
-        _channels[unchecked((int)RGBA.B)] = new(pixelWidth, pixelHeight);
+        _r = new(pixelWidth, pixelHeight);
+        _g = new(pixelWidth, pixelHeight);
+        _b = new(pixelWidth, pixelHeight);
     }
 
     public int PixelWidth { get; }
 
     public int PixelHeight { get; }
 
-    public int PixelCount => _channels[0].Length;
+    public int PixelCount => _r.Length;
 
-    public Channel this[RGBA index] => _channels[unchecked((int)index)];
+    public Channel R => _r;
 
-    public Channel R => _channels[0];
+    public Channel G => _g;
 
-    public Channel G => _channels[1];
-
-    public Channel B => _channels[2];
+    public Channel B => _b;
 
     public static RgbBitmap Load(IWicImagingFactory factory, string filename)
     {
@@ -96,22 +126,30 @@ public unsafe class RgbBitmap : IDisposable
         {
             throw new ArgumentException("buffer too small");
         }
-        var ptrR = this[RGBA.R].AsPointer();
-        var ptrG = this[RGBA.G].AsPointer();
-        var ptrB = this[RGBA.B].AsPointer();
+        var ptrR = _r.AsPointer();
+        var ptrG = _g.AsPointer();
+        var ptrB = _b.AsPointer();
+
         fixed (byte* ptrDst = pixels)
         {
+            var dst = ptrDst;
             var pixelsCount = PixelWidth * PixelHeight;
-            for (var i = 0; i < pixelsCount; ++i)
+            for (var y = 0; y < PixelHeight; y++, dst += PixelWidth * 4
+                , ptrR += _r.Step
+                , ptrG += _g.Step
+                , ptrB += _b.Step)
             {
-                var r = ptrR[i];
-                var g = ptrG[i];
-                var b = ptrB[i];
-                var a = 1f;
-                ptrDst[i * 4 + 0] = (byte)(b * a * 255f);
-                ptrDst[i * 4 + 1] = (byte)(g * a * 255f);
-                ptrDst[i * 4 + 2] = (byte)(r * a * 255f);
-                ptrDst[i * 4 + 3] = 255;
+                for (var x = 0; x < PixelWidth; ++x)
+                {
+                    var r = ptrR[x];
+                    var g = ptrG[x];
+                    var b = ptrB[x];
+                    var a = 1f;
+                    dst[x * 4 + 0] = (byte)(b * a * 255f);
+                    dst[x * 4 + 1] = (byte)(g * a * 255f);
+                    dst[x * 4 + 2] = (byte)(r * a * 255f);
+                    dst[x * 4 + 3] = 255;
+                }
             }
         }
     }
@@ -139,10 +177,9 @@ public unsafe class RgbBitmap : IDisposable
 
     public void Dispose()
     {
-        for (var i = 0; i < _channels.Length; ++i)
-        {
-            _channels[i].Dispose();
-        }
+        _r.Dispose();
+        _g.Dispose();
+        _b.Dispose();
     }
 
     internal static RgbBitmap CreateUninitialized(int pixelWidth, int pixelHeight)

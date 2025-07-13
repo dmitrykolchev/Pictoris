@@ -9,7 +9,6 @@ using Managed.Graphics.Direct2d;
 using Managed.Graphics.Dxgi;
 using Managed.Graphics.Imaging;
 using Managed.Graphics.Wic;
-using Managed.Win32;
 using Dxgi = Managed.Graphics.Dxgi;
 
 namespace D2DSample;
@@ -25,12 +24,7 @@ public partial class MainWindow : Form
     private DeviceContext? _deviceContext;
     private Bitmap1? _bitmap;
     private SolidColorBrush? _brush;
-
-    private RgbBitmap? _gradient;
-
     private Managed.Graphics.Direct2d.Bitmap? _picture;
-    private Managed.Graphics.Direct2d.Bitmap? _gradientBitmap;
-
     private float _time;
     private float _baseHue;
 
@@ -47,7 +41,7 @@ public partial class MainWindow : Form
 
     private void CreateGradient()
     {
-        if (_deviceContext != null && _picture == null)
+        if (_deviceContext != null && _wicFactory != null && _picture == null)
         {
             //BitmapF bitmap = BitmapF.CreateBitmap(256, 256);
             //var r = bitmap.GetChannel(BitmapChannel.Red);
@@ -66,9 +60,9 @@ public partial class MainWindow : Form
             //_gradientBitmap = BitmapF.CreateBitmapFromRawData(_deviceContext, buffer, bitmap.Width, bitmap.Height);
             //_gradient = bitmap;
 
-            string file1 = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large).JPG"; //
+            var file1 = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large).JPG"; //
             var bitmap1 = RgbBitmap.Load(_wicFactory, file1);
-            string file2 = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large)_1.JPG"; //
+            var file2 = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\Large\3M6A7290_1 (Large)_1.JPG"; //
             var bitmap2 = RgbBitmap.Load(_wicFactory, file2);
             var bitmap3 = BitmapBlend.Difference(bitmap1, bitmap2);
             bitmap3._Log(MathF.E * 10);
@@ -82,7 +76,6 @@ public partial class MainWindow : Form
             //_picture = BitmapF.LoadBitmapFromFile(_wicFactory, _deviceContext, fileName);
         }
     }
-
 
     private void MainWindow_FormClosed(object? sender, FormClosedEventArgs e)
     {
@@ -138,8 +131,6 @@ public partial class MainWindow : Form
         base.OnKeyDown(e);
     }
 
-    private Task<List<Tuple<IGeometry, ColorF>>>? _task;
-
     private void Render()
     {
         var renderTarget = _deviceContext!;
@@ -160,7 +151,6 @@ public partial class MainWindow : Form
                   (dstSize.Height - bmpSize.Height) / 2,
                   bmpSize.Width,
                   bmpSize.Height));
-
 
         //var copy = _task == null
         //    ? []
@@ -209,7 +199,7 @@ public partial class MainWindow : Form
     private unsafe void MainWindow_Load(object? sender, EventArgs e)
     {
         _dxgiDevice?.Dispose();
-        
+
         _wicFactory = WicImagingFactory2.CreateFactory();
 
         _dxgiDevice = Dxgi.DxgiDevice.CreateDevice();
@@ -251,7 +241,6 @@ public partial class MainWindow : Form
     {
         Render();
     }
-
 
     private void timer1_Tick(object sender, EventArgs e)
     {

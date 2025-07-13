@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="intelipp.redist.win-x64" Version="2022.2.0.575" />
+    <PackageReference Include="intelopenmp.redist.win" Version="2025.2.0.756" />
+    <PackageReference Include="inteltbb.redist.win" Version="2022.2.0.503" />
   </ItemGroup>
 
 </Project>

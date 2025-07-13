@@ -33,10 +33,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), alpha, r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), alpha, r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), alpha, r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), alpha, r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), alpha, r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), alpha, r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, float alpha, Span<float> r)
         {
@@ -59,10 +59,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -78,10 +78,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -97,10 +97,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -115,10 +115,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -136,10 +136,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -155,10 +155,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -174,10 +174,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -195,10 +195,10 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        CalcChannel(d[RGBA.R].AsSpan(), s[RGBA.R].AsSpan(), r[RGBA.R].AsSpan());
-        CalcChannel(d[RGBA.G].AsSpan(), s[RGBA.G].AsSpan(), r[RGBA.G].AsSpan());
-        CalcChannel(d[RGBA.B].AsSpan(), s[RGBA.B].AsSpan(), r[RGBA.B].AsSpan());
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
+        CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
+        CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
 
         static void CalcChannel(ReadOnlySpan<float> d, ReadOnlySpan<float> s, Span<float> r)
         {
@@ -213,7 +213,7 @@ public static unsafe class BitmapBlend
         {
             throw new ArgumentException("bitmap must have the same size");
         }
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
         CalcChannel(d.R.AsSpan(), s.R.AsSpan(), r.R.AsSpan());
         CalcChannel(d.G.AsSpan(), s.G.AsSpan(), r.G.AsSpan());
         CalcChannel(d.B.AsSpan(), s.B.AsSpan(), r.B.AsSpan());
@@ -275,7 +275,7 @@ public static unsafe class BitmapBlend
             throw new ArgumentException("bitmap must have the same size");
         }
 
-        RgbBitmap r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
         var dR = d.R.AsPointer();
         var dG = d.G.AsPointer();
         var dB = d.B.AsPointer();
@@ -330,15 +330,15 @@ public static unsafe class BitmapBlend
 
     public static RgbBitmap DarkerColor(RgbBitmap d, RgbBitmap s)
     {
-        int pixelWidth = s.PixelWidth;
-        int pixelHeight = s.PixelHeight;
+        var pixelWidth = s.PixelWidth;
+        var pixelHeight = s.PixelHeight;
 
         if (pixelWidth != d.PixelWidth || pixelHeight != d.PixelHeight)
         {
             throw new ArgumentException("bitmap must have the same size");
         }
 
-        RgbBitmap r = RgbBitmap.CreateUninitialized(pixelWidth, pixelHeight);
+        var r = RgbBitmap.CreateUninitialized(pixelWidth, pixelHeight);
 
         var dR = d.R.AsPointer();
         var dG = d.G.AsPointer();

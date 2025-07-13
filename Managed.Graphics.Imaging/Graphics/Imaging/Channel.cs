@@ -4,13 +4,14 @@
 // </copyright>
 
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using static Managed.Ipp.Native.Methods;
 
 namespace Managed.Graphics.Imaging;
 
 public unsafe class Channel : IDisposable
 {
-    private float* _buffer;
+    private readonly float* _buffer;
+    private readonly int _stepBytes;
 
     /// <summary>
     /// Constructor
@@ -21,12 +22,22 @@ public unsafe class Channel : IDisposable
     {
         Width = width;
         Height = height;
-        // длина должна делиться на 8, для обработки при помощи инструкций Avx
-        var pixelCount = (width * height + 7) & ~7;
-        // буфер нужно выровнять на 32 байта, для использования LoadAligned & StoreAligned
-        _buffer = (float*)NativeMemory.AlignedAlloc((nuint)pixelCount * sizeof(float), 32);
-        Length = pixelCount;
+        int stepBytes;
+        _buffer = ippiMalloc_32f_C1(width, height, &stepBytes);
+        if (_buffer == null)
+        {
+            throw new InvalidOperationException("Out of memory");
+        }
+        _stepBytes = stepBytes;
+        Length = _stepBytes / sizeof(float) * height;
     }
+
+    /// <summary>
+    /// Distance, in bytes, between the starting points of consecutive lines in the image
+    /// </summary>
+    public int StepBytes => _stepBytes;
+
+    public int Step => _stepBytes / sizeof(float);
 
     /// <summary>
     /// Returns the channel width
@@ -71,10 +82,10 @@ public unsafe class Channel : IDisposable
     /// <inheritdoc />
     public void Dispose()
     {
-        if (_buffer != null)
+        var buffer = _buffer;
+        if (buffer != null)
         {
-            NativeMemory.AlignedFree(_buffer);
-            _buffer = null;
+            ippiFree(buffer);
         }
     }
 }

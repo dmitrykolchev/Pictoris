@@ -11,9 +11,9 @@ public static class BitmapOperations
 {
     public static unsafe RgbBitmap _Log(this RgbBitmap bitmap, float maxValue)
     {
-        CalcChannel(bitmap[RGBA.R].AsSpan(), maxValue);
-        CalcChannel(bitmap[RGBA.G].AsSpan(), maxValue);
-        CalcChannel(bitmap[RGBA.B].AsSpan(), maxValue);
+        CalcChannel(bitmap.R.AsSpan(), maxValue);
+        CalcChannel(bitmap.G.AsSpan(), maxValue);
+        CalcChannel(bitmap.B.AsSpan(), maxValue);
 
         static void CalcChannel(Span<float> buffer, float maxValue)
         {
@@ -29,9 +29,9 @@ public static class BitmapOperations
 
     public static unsafe RgbBitmap _Invert(this RgbBitmap bitmap)
     {
-        CalcChannel(bitmap[RGBA.R].AsSpan());
-        CalcChannel(bitmap[RGBA.G].AsSpan());
-        CalcChannel(bitmap[RGBA.B].AsSpan());
+        CalcChannel(bitmap.R.AsSpan());
+        CalcChannel(bitmap.G.AsSpan());
+        CalcChannel(bitmap.B.AsSpan());
 
         static void CalcChannel(Span<float> buffer)
         {

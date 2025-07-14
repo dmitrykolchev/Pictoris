@@ -37,12 +37,11 @@ public unsafe class Channel : IDisposable
     /// </summary>
     public int StepBytes => _stepBytes;
 
-    public int Step => _stepBytes / sizeof(float);
-
     /// <summary>
     /// Returns the channel width
     /// </summary>
     public int Width { get; }
+
     /// <summary>
     /// Returns the channel height
     /// </summary>

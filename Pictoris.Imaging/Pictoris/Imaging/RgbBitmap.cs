@@ -21,68 +21,28 @@ public unsafe class RgbBitmap : IDisposable
     private RgbBitmap(int pixelWidth, int pixelHeight, ReadOnlySpan<byte> pixelBuffer) :
         this(pixelWidth, pixelHeight)
     {
-        int status;
         var roiSize = new IppiSize { height = pixelHeight, width = pixelWidth };
 
-        // 3. Временные буферы для промежуточного хранения Ipp8u плоскостей
-        var red8uStep = 0;
-        var pRed8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &red8uStep);
-        var green8uStep = 0;
-        var pGreen8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &green8uStep);
-        var blue8uStep = 0;
-        var pBlue8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &blue8uStep);
-        var alpha8uStep = 0;
-        var pAlpha8u = ippiMalloc_8u_C1(pixelWidth, pixelHeight, &alpha8uStep);
+        var imageStep = 0;
+        var image = ippiMalloc_32f_C4(pixelWidth, pixelHeight, &imageStep);
 
-        // 4. Разделение пиксельного изображения на плоскости (Ipp8u_P3)
-        var dstPlanes = new byte*[] { pRed8u, pGreen8u, pBlue8u, pAlpha8u };
-        fixed (byte* pSrcImage = pixelBuffer)
-        fixed (byte** pdstPlanes = &dstPlanes[0])
+        int status;
+        fixed (byte* src = pixelBuffer)
         {
-            var srcStep = pixelWidth * 4;
-            status = ippiCopy_8u_C4P4R(pSrcImage, srcStep, pdstPlanes, red8uStep, roiSize);
-            if (status != 0)
-            {
-                throw new InvalidOperationException("Failed to copy C3 to P3");
-            }
+            status = ippiScale_8u32f_C3R(src, pixelWidth * 3, image, imageStep, roiSize, 0f, 1f);
         }
+        var planes = stackalloc float*[] { _r.AsPointer(), _g.AsPointer(), _b.AsPointer()};
+        status = ippiCopy_32f_C3P3R(image, imageStep, planes, _r.StepBytes, roiSize);
 
-        // 5. масштабирование значений из [0, 255] в [0.0, 1.0]
-        status = ippiScale_8u32f_C1R(pRed8u, red8uStep, _r.AsPointer(), _r.StepBytes, roiSize, 0f, 1f);
-        if (status != 0)
-        {
-            throw new InvalidOperationException("Failed to scale Red plane");
-        }
-        status = ippiScale_8u32f_C1R(pGreen8u, green8uStep, _g.AsPointer(), _g.StepBytes, roiSize, 0f, 1f);
-        if (status != 0)
-        {
-            throw new InvalidOperationException("Failed to scale Green plane");
-        }
-        status = ippiScale_8u32f_C1R(pBlue8u, blue8uStep, _b.AsPointer(), _b.StepBytes, roiSize, 0f, 1f);
-        if (status != 0)
-        {
-            throw new InvalidOperationException("Failed to scale Red plane");
-        }
-
-        ippiFree(pRed8u);
-        ippiFree(pGreen8u);
-        ippiFree(pBlue8u);
+        ippiFree(image);
     }
 
     private RgbBitmap(int pixelWidth, int pixelHeight, float r, float g, float b) :
         this(pixelWidth, pixelHeight)
     {
-        var ptrR = _r.AsPointer();
-        var ptrG = _g.AsPointer();
-        var ptrB = _b.AsPointer();
-
-        var pixelCount = _r.Length;
-        for (var index = 0; index < pixelCount; ++index)
-        {
-            ptrR[index] = r;
-            ptrG[index] = g;
-            ptrB[index] = b;
-        }
+        _r.AsSpan().Fill(r);
+        _g.AsSpan().Fill(g);
+        _b.AsSpan().Fill(b);
     }
 
     private RgbBitmap(int pixelWidth, int pixelHeight)
@@ -106,12 +66,14 @@ public unsafe class RgbBitmap : IDisposable
 
     public Channel B => _b;
 
+    public BitmapMask? Mask { get; set; }
+
     public static RgbBitmap Load(IWicImagingFactory factory, string filename)
     {
-        using var converter = factory.GetFormatConverterFromFilename(filename, Guids.GUID_WICPixelFormat32bppRGBA);
+        using var converter = factory.GetFormatConverterFromFilename(filename, Guids.GUID_WICPixelFormat24bppRGB);
         var size = converter.Size;
         var pixelCount = size.Width * size.Height;
-        var stride = size.Width * 4;
+        var stride = size.Width * 3;
         var pixelBuffer = GC.AllocateUninitializedArray<byte>(stride * size.Height);
         var bufferSize = stride * size.Height;
         converter.CopyPixels(stride, pixelBuffer.AsSpan());
@@ -128,32 +90,30 @@ public unsafe class RgbBitmap : IDisposable
         {
             throw new ArgumentException("buffer too small");
         }
-        var ptrR = _r.AsPointer();
-        var ptrG = _g.AsPointer();
-        var ptrB = _b.AsPointer();
 
-        fixed (byte* ptrDst = pixels)
+        int tempStep;
+        var temp = ippiMalloc_32f_C4(PixelWidth, PixelHeight, &tempStep);
+
+        var mask = Mask ?? BitmapMask.Create(PixelWidth, PixelHeight, 1f);
+
+        var planes = stackalloc float*[] {
+            _b.AsPointer(),
+            _g.AsPointer(),
+            _r.AsPointer(),
+            mask.A.AsPointer()
+        };
+        var roiSize = new IppiSize { height = PixelHeight, width = PixelWidth };
+        var status = ippiCopy_32f_P4C4R(planes, _r.StepBytes, temp, tempStep, roiSize);
+        if (Mask == null)
         {
-            var dst = ptrDst;
-            var pixelsCount = PixelWidth * PixelHeight;
-            for (var y = 0; y < PixelHeight; y++, dst += PixelWidth * 4
-                , ptrR += _r.Step
-                , ptrG += _g.Step
-                , ptrB += _b.Step)
-            {
-                for (var x = 0; x < PixelWidth; ++x)
-                {
-                    var r = ptrR[x];
-                    var g = ptrG[x];
-                    var b = ptrB[x];
-                    var a = 1f;
-                    dst[x * 4 + 0] = (byte)(b * a * 255f);
-                    dst[x * 4 + 1] = (byte)(g * a * 255f);
-                    dst[x * 4 + 2] = (byte)(r * a * 255f);
-                    dst[x * 4 + 3] = 255;
-                }
-            }
+            mask.Dispose();
         }
+        fixed (byte* dst = pixels)
+        {
+            status = ippiScale_32f8u_C4R(temp, tempStep, dst, PixelWidth * 4, roiSize, 0, 1);
+            status = ippiAlphaPremul_8u_AC4IR(dst, PixelWidth * 4, roiSize);
+        }
+        ippiFree(temp);
     }
 
     public byte[] AssembleBitmap()

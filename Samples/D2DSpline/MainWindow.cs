@@ -7,15 +7,14 @@ using System.Runtime.Intrinsics;
 using Managed.Graphics;
 using Managed.Graphics.Direct2d;
 using Managed.Graphics.Dxgi;
-using Dxgi = Managed.Graphics.Dxgi;
 
 namespace D2DSample;
 
 public partial class MainWindow : Form
 {
-    private Dxgi.DxgiDevice? _dxgiDevice;
-    private Dxgi.IDxgiSwapChain? _swapChain;
-    private Dxgi.DxgiSurface? _surface;
+    private DxgiDevice? _dxgiDevice;
+    private IDxgiSwapChain? _swapChain;
+    private DxgiSurface? _surface;
 
     private Direct2dFactory1? _factory;
     private DeviceContext? _deviceContext;
@@ -153,7 +152,7 @@ public partial class MainWindow : Form
     {
         _dxgiDevice?.Dispose();
 
-        _dxgiDevice = Dxgi.DxgiDevice.CreateDevice();
+        _dxgiDevice = DxgiDevice.CreateDevice();
         _factory = Direct2dFactory1.CreateFactory(
             FactoryType.SingleThreaded);
         using (var device = _factory.CreateDevice(_dxgiDevice))

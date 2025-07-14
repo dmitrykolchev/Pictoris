@@ -7,6 +7,7 @@ using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
+using Managed.Graphics;
 
 namespace Pictoris.Imaging;
 /// <summary>
@@ -225,49 +226,6 @@ public static unsafe class BitmapBlend
         return r;
     }
 
-    public static RgbBitmap DarkenSse(RgbBitmap d, RgbBitmap s)
-    {
-        if (s.PixelWidth != d.PixelWidth || s.PixelHeight != d.PixelHeight)
-        {
-            throw new ArgumentException("bitmap must have the same size");
-        }
-        var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
-        var pixelCount = s.PixelWidth * s.PixelHeight;
-        if (Avx.IsSupported)
-        {
-            DarkenChannel(d.R.AsPointer(), s.R.AsPointer(), r.R.AsPointer(), pixelCount);
-            DarkenChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
-            DarkenChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
-
-            static void DarkenChannel(float* d, float* s, float* r, int pixelCount)
-            {
-                for (var i = 0; i < pixelCount; i += Vector256<float>.Count)
-                {
-                    var dd = Avx.LoadAlignedVector256(d + i);
-                    var ss = Avx.LoadAlignedVector256(s + i);
-                    Avx.StoreAlignedNonTemporal(r + i, Avx.Min(dd, ss));
-                }
-            }
-        }
-        else
-        {
-            DarkenChannel(d.R.AsPointer(), s.R.AsPointer(), r.R.AsPointer(), pixelCount);
-            DarkenChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
-            DarkenChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
-
-            static void DarkenChannel(float* d, float* s, float* r, int pixelCount)
-            {
-                for (var i = 0; i < pixelCount; i += Vector128<float>.Count)
-                {
-                    var dd = Sse.LoadAlignedVector128(d + i);
-                    var ss = Sse.LoadAlignedVector128(s + i);
-                    Sse.StoreAlignedNonTemporal(r + i, Sse.Min(dd, ss));
-                }
-            }
-        }
-        return r;
-    }
-
     public static unsafe RgbBitmap LighterColor(RgbBitmap d, RgbBitmap s)
     {
         if (s.PixelWidth != d.PixelWidth || s.PixelHeight != d.PixelHeight)
@@ -276,6 +234,7 @@ public static unsafe class BitmapBlend
         }
 
         var r = RgbBitmap.CreateUninitialized(s.PixelWidth, s.PixelHeight);
+
         var dR = d.R.AsPointer();
         var dG = d.G.AsPointer();
         var dB = d.B.AsPointer();
@@ -288,42 +247,43 @@ public static unsafe class BitmapBlend
         var rG = r.G.AsPointer();
         var rB = r.B.AsPointer();
 
-        var c0_30 = Vector128.Create(0.3f);
-        var c0_59 = Vector128.Create(0.59f);
-        var c0_11 = Vector128.Create(0.11f);
+        var rLuma = Vector256.Create(ColorF.BT_709_RedLuma);
+        var gLuma = Vector256.Create(ColorF.BT_709_GreenLuma);
+        var bLuma = Vector256.Create(ColorF.BT_709_BlueLuma);
+
         var pixelCount = s.PixelWidth * s.PixelHeight;
 
-        for (var i = 0; i < pixelCount; i += 4)
+        for (var i = 0; i < pixelCount; i += 8)
         {
-            var ssR = Sse.LoadAlignedVector128(sR + i);
-            var ssG = Sse.LoadAlignedVector128(sG + i);
-            var ssB = Sse.LoadAlignedVector128(sB + i);
-            var sBright = Sse.Add(
-                Sse.Add(
-                    Sse.Multiply(ssR, c0_30),
-                    Sse.Multiply(ssG, c0_59)
+            var ssR = Avx2.LoadAlignedVector256(sR + i);
+            var ssG = Avx2.LoadAlignedVector256(sG + i);
+            var ssB = Avx2.LoadAlignedVector256(sB + i);
+            var sBright = Avx2.Add(
+                Avx2.Add(
+                    Avx2.Multiply(ssR, rLuma),
+                    Avx2.Multiply(ssG, gLuma)
                 ),
-                Sse.Multiply(ssB, c0_11)
+                Avx2.Multiply(ssB, bLuma)
             );
 
-            var ddR = Sse.LoadAlignedVector128(dR + i);
-            var ddG = Sse.LoadAlignedVector128(dG + i);
-            var ddB = Sse.LoadAlignedVector128(dB + i);
-            var dBright = Sse.Add(
-                Sse.Add(
-                    Sse.Multiply(ddR, c0_30),
-                    Sse.Multiply(ddG, c0_59)
+            var ddR = Avx2.LoadAlignedVector256(dR + i);
+            var ddG = Avx2.LoadAlignedVector256(dG + i);
+            var ddB = Avx2.LoadAlignedVector256(dB + i);
+            var dBright = Avx2.Add(
+                Avx2.Add(
+                    Avx2.Multiply(ddR, rLuma),
+                    Avx2.Multiply(ddG, gLuma)
                 ),
-                Sse.Multiply(ddB, c0_11)
+                Avx2.Multiply(ddB, bLuma)
             );
 
-            var control = Sse.CompareGreaterThan(sBright, dBright);
+            var control = Avx2.CompareGreaterThan(sBright, dBright);
             var rrR = XMVectorSelect(ddR, ssR, control);
             var rrG = XMVectorSelect(ddG, ssG, control);
             var rrB = XMVectorSelect(ddB, ssB, control);
-            Sse.StoreAlignedNonTemporal(rR + i, rrR);
-            Sse.StoreAlignedNonTemporal(rG + i, rrG);
-            Sse.StoreAlignedNonTemporal(rB + i, rrB);
+            Avx.StoreAlignedNonTemporal(rR + i, rrR);
+            Avx.StoreAlignedNonTemporal(rG + i, rrG);
+            Avx.StoreAlignedNonTemporal(rB + i, rrB);
         }
         return r;
     }
@@ -343,48 +303,51 @@ public static unsafe class BitmapBlend
         var dR = d.R.AsPointer();
         var dG = d.G.AsPointer();
         var dB = d.B.AsPointer();
+
         var sR = s.R.AsPointer();
         var sG = s.G.AsPointer();
         var sB = s.B.AsPointer();
+
         var rR = r.R.AsPointer();
         var rG = r.G.AsPointer();
         var rB = r.B.AsPointer();
 
-        var c0_30 = Vector128.Create(0.3f);
-        var c0_59 = Vector128.Create(0.59f);
-        var c0_11 = Vector128.Create(0.11f);
+        var rLuma = Vector256.Create(ColorF.BT_709_RedLuma);
+        var gLuma = Vector256.Create(ColorF.BT_709_GreenLuma);
+        var bLuma = Vector256.Create(ColorF.BT_709_BlueLuma);
+
         var pixelCount = pixelWidth * pixelHeight;
-        for (var i = 0; i < pixelCount; i += 4)
+        for (var i = 0; i < pixelCount; i += 8)
         {
-            var ssR = Sse.LoadAlignedVector128(sR + i);
-            var ssG = Sse.LoadAlignedVector128(sG + i);
-            var ssB = Sse.LoadAlignedVector128(sB + i);
-            var sBright = Sse.Add(
-                Sse.Add(
-                    Sse.Multiply(ssR, c0_30),
-                    Sse.Multiply(ssG, c0_59)
+            var ssR = Avx2.LoadAlignedVector256(sR + i);
+            var ssG = Avx2.LoadAlignedVector256(sG + i);
+            var ssB = Avx2.LoadAlignedVector256(sB + i);
+            var sBright = Avx2.Add(
+                Avx2.Add(
+                    Avx2.Multiply(ssR, rLuma),
+                    Avx2.Multiply(ssG, gLuma)
                 ),
-                Sse.Multiply(ssB, c0_11)
+                Avx2.Multiply(ssB, bLuma)
             );
 
-            var ddR = Sse.LoadAlignedVector128(dR + i);
-            var ddG = Sse.LoadAlignedVector128(dG + i);
-            var ddB = Sse.LoadAlignedVector128(dB + i);
-            var dBright = Sse.Add(
-                Sse.Add(
-                    Sse.Multiply(ddR, c0_30),
-                    Sse.Multiply(ddG, c0_59)
+            var ddR = Avx2.LoadAlignedVector256(dR + i);
+            var ddG = Avx2.LoadAlignedVector256(dG + i);
+            var ddB = Avx2.LoadAlignedVector256(dB + i);
+            var dBright = Avx2.Add(
+                Avx2.Add(
+                    Avx2.Multiply(ddR, rLuma),
+                    Avx2.Multiply(ddG, gLuma)
                 ),
-                Sse.Multiply(ddB, c0_11)
+                Avx2.Multiply(ddB, bLuma)
             );
 
-            var control = Sse.CompareLessThan(sBright, dBright);
+            var control = Avx2.CompareLessThan(sBright, dBright);
             var rrR = XMVectorSelect(ddR, ssR, control);
             var rrG = XMVectorSelect(ddG, ssG, control);
             var rrB = XMVectorSelect(ddB, ssB, control);
-            Sse.StoreAlignedNonTemporal(rR + i, rrR);
-            Sse.StoreAlignedNonTemporal(rG + i, rrG);
-            Sse.StoreAlignedNonTemporal(rB + i, rrB);
+            Avx2.StoreAlignedNonTemporal(rR + i, rrR);
+            Avx2.StoreAlignedNonTemporal(rG + i, rrG);
+            Avx2.StoreAlignedNonTemporal(rB + i, rrB);
         }
         return r;
     }
@@ -411,20 +374,20 @@ public static unsafe class BitmapBlend
             var two = Vector256.Create(2.0f);
             var zero = Vector256<float>.Zero;
 
-            for (var i = 0; i < pixelCount; i += 256 / 8 / sizeof(float))
+            for (var i = 0; i < pixelCount; i += 8)
             {
-                var dd = Avx.LoadAlignedVector256(d + i);
-                var ss = Avx.LoadAlignedVector256(s + i);
-                var mask = Avx.CompareLessThanOrEqual(dd, half);
-                var lowBranch = Avx.Multiply(Avx.Multiply(two, dd), ss);
-                var highBranch = Avx.Subtract(one,
-                    Avx.Multiply(two,
-                        Avx.Multiply(Avx.Subtract(one, dd), Avx.Subtract(one, ss))
+                var dd = Avx2.LoadAlignedVector256(d + i);
+                var ss = Avx2.LoadAlignedVector256(s + i);
+                var mask = Avx2.CompareLessThanOrEqual(dd, half);
+                var lowBranch = Avx2.Multiply(Avx.Multiply(two, dd), ss);
+                var highBranch = Avx2.Subtract(one,
+                    Avx2.Multiply(two,
+                        Avx2.Multiply(Avx2.Subtract(one, dd), Avx2.Subtract(one, ss))
                     )
                 );
-                var result = Avx.BlendVariable(highBranch, lowBranch, mask);
-                result = Avx.Max(zero, Avx.Min(one, result));
-                Avx.StoreAlignedNonTemporal(r + i, result);
+                var result = Avx2.BlendVariable(highBranch, lowBranch, mask);
+                result = Avx2.Max(zero, Avx.Min(one, result));
+                Avx2.StoreAlignedNonTemporal(r + i, result);
             }
         }
         return r;
@@ -438,5 +401,11 @@ public static unsafe class BitmapBlend
             return Sse41.BlendVariable(v1, v2, control);
         }
         return Sse.Or(Sse.AndNot(control, v1), Sse.And(v2, control));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static unsafe Vector256<float> XMVectorSelect(Vector256<float> v1, Vector256<float> v2, Vector256<float> control)
+    {
+        return Avx2.BlendVariable(v1, v2, control);
     }
 }

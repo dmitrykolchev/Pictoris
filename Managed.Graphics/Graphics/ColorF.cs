@@ -11,6 +11,14 @@ namespace Managed.Graphics;
 
 public readonly struct ColorF
 {
+    public const float BT_601_RedLuma = 0.299f;
+    public const float BT_601_GreenLuma = 0.587f;
+    public const float BT_601_BlueLuma = 0.114f;
+
+    public const float BT_709_RedLuma = 0.2126f;
+    public const float BT_709_GreenLuma = 0.7152f;
+    public const float BT_709_BlueLuma = 0.0722f;
+
     public readonly float R;
     public readonly float G;
     public readonly float B;

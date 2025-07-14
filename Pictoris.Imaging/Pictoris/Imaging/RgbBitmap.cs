@@ -24,7 +24,7 @@ public unsafe class RgbBitmap : IDisposable
         var roiSize = new IppiSize { height = pixelHeight, width = pixelWidth };
 
         var imageStep = 0;
-        var image = ippiMalloc_32f_C4(pixelWidth, pixelHeight, &imageStep);
+        var image = ippiMalloc_32f_C3(pixelWidth, pixelHeight, &imageStep);
 
         int status;
         fixed (byte* src = pixelBuffer)

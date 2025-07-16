@@ -1,4 +1,4 @@
-﻿// <copyright file="RenderTarget{T}.cs" company="Dmitry Kolchev">
+// <copyright file="RenderTarget{T}.cs" company="Dmitry Kolchev">
 // Copyright (c) 2025 Dmitry Kolchev. All rights reserved.
 // See LICENSE in the project root for license information
 // </copyright>
@@ -33,7 +33,6 @@ public unsafe class RenderTarget<T> : Resource<T>
             return new Bitmap(bitmap);
         }
     }
-
 
     //[return: NativeTypeName("HRESULT")]
     //int CreateBitmapFromWicBitmap(IWICBitmapSource* wicBitmapSource, [NativeTypeName("const D2D1_BITMAP_PROPERTIES *")] D2D1_BITMAP_PROPERTIES* bitmapProperties, ID2D1Bitmap** bitmap);

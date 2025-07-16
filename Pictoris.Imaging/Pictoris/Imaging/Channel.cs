@@ -4,12 +4,16 @@
 // </copyright>
 
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using Managed.Ipp.Native;
 using static Managed.Ipp.Native.Methods;
 
 namespace Pictoris.Imaging;
 
 public unsafe class Channel : IDisposable
 {
+    private const uint Avx2Alignment = 32;
+
     private readonly float* _buffer;
     private readonly int _stepBytes;
 
@@ -22,14 +26,16 @@ public unsafe class Channel : IDisposable
     {
         Width = width;
         Height = height;
-        int stepBytes;
-        _buffer = ippiMalloc_32f_C1(width, height, &stepBytes);
-        if (_buffer == null)
-        {
-            throw new InvalidOperationException("Out of memory");
-        }
+        var stepBytes = unchecked((int)(((sizeof(float) * width) + (Avx2Alignment - 1)) & ~(Avx2Alignment - 1)));
+        _buffer = (float*)NativeMemory.AlignedAlloc((nuint)stepBytes * (nuint)height * sizeof(float), Avx2Alignment);
         _stepBytes = stepBytes;
         Length = _stepBytes / sizeof(float) * height;
+    }
+
+    private unsafe Channel(Channel channel) : this(channel.Width, channel.Height)
+    {
+        IppiSize roiSize = new() { width = Width, height = Height };
+        var status = ippiCopy_32f_C1R(channel._buffer, channel._stepBytes, _buffer, _stepBytes, roiSize);
     }
 
     /// <summary>
@@ -78,13 +84,18 @@ public unsafe class Channel : IDisposable
         return ref Unsafe.AsRef<float>(_buffer);
     }
 
+    public Channel Clone()
+    {
+        return new Channel(this);
+    }
+
     /// <inheritdoc />
     public void Dispose()
     {
         var buffer = _buffer;
         if (buffer != null)
         {
-            ippiFree(buffer);
+            NativeMemory.AlignedFree(buffer);
         }
     }
 }

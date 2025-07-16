@@ -251,31 +251,50 @@ public static unsafe class BitmapBlend
         var gLuma = Vector256.Create(ColorF.BT_709_GreenLuma);
         var bLuma = Vector256.Create(ColorF.BT_709_BlueLuma);
 
-        var pixelCount = s.PixelWidth * s.PixelHeight;
+        var pixelCount = s.PixelCount;
 
         for (var i = 0; i < pixelCount; i += 8)
         {
             var ssR = Avx2.LoadAlignedVector256(sR + i);
             var ssG = Avx2.LoadAlignedVector256(sG + i);
             var ssB = Avx2.LoadAlignedVector256(sB + i);
-            var sBright = Avx2.Add(
-                Avx2.Add(
-                    Avx2.Multiply(ssR, rLuma),
-                    Avx2.Multiply(ssG, gLuma)
-                ),
-                Avx2.Multiply(ssB, bLuma)
-            );
 
             var ddR = Avx2.LoadAlignedVector256(dR + i);
             var ddG = Avx2.LoadAlignedVector256(dG + i);
             var ddB = Avx2.LoadAlignedVector256(dB + i);
-            var dBright = Avx2.Add(
-                Avx2.Add(
-                    Avx2.Multiply(ddR, rLuma),
-                    Avx2.Multiply(ddG, gLuma)
-                ),
-                Avx2.Multiply(ddB, bLuma)
-            );
+
+            Vector256<float> sBright;
+            Vector256<float> dBright;
+            if (Fma.IsSupported)
+            {
+                sBright = Fma.MultiplyAdd(ssB, bLuma,
+                    Fma.MultiplyAdd(ssG, gLuma,
+                        Avx2.Multiply(ssR, rLuma)
+                    )
+                );
+                dBright = Fma.MultiplyAdd(ddB, bLuma,
+                    Fma.MultiplyAdd(ddG, gLuma,
+                        Avx2.Multiply(ddR, rLuma)
+                    )
+                );
+            }
+            else
+            {
+                sBright = Avx2.Add(
+                    Avx2.Add(
+                        Avx2.Multiply(ssR, rLuma),
+                        Avx2.Multiply(ssG, gLuma)
+                    ),
+                    Avx2.Multiply(ssB, bLuma)
+                );
+                dBright = Avx2.Add(
+                    Avx2.Add(
+                        Avx2.Multiply(ddR, rLuma),
+                        Avx2.Multiply(ddG, gLuma)
+                    ),
+                    Avx2.Multiply(ddB, bLuma)
+                );
+            }
 
             var control = Avx2.CompareGreaterThan(sBright, dBright);
             var rrR = XMVectorSelect(ddR, ssR, control);
@@ -316,30 +335,49 @@ public static unsafe class BitmapBlend
         var gLuma = Vector256.Create(ColorF.BT_709_GreenLuma);
         var bLuma = Vector256.Create(ColorF.BT_709_BlueLuma);
 
-        var pixelCount = pixelWidth * pixelHeight;
+        var pixelCount = s.PixelCount;
         for (var i = 0; i < pixelCount; i += 8)
         {
             var ssR = Avx2.LoadAlignedVector256(sR + i);
             var ssG = Avx2.LoadAlignedVector256(sG + i);
             var ssB = Avx2.LoadAlignedVector256(sB + i);
-            var sBright = Avx2.Add(
-                Avx2.Add(
-                    Avx2.Multiply(ssR, rLuma),
-                    Avx2.Multiply(ssG, gLuma)
-                ),
-                Avx2.Multiply(ssB, bLuma)
-            );
 
             var ddR = Avx2.LoadAlignedVector256(dR + i);
             var ddG = Avx2.LoadAlignedVector256(dG + i);
             var ddB = Avx2.LoadAlignedVector256(dB + i);
-            var dBright = Avx2.Add(
-                Avx2.Add(
-                    Avx2.Multiply(ddR, rLuma),
-                    Avx2.Multiply(ddG, gLuma)
-                ),
-                Avx2.Multiply(ddB, bLuma)
-            );
+
+            Vector256<float> sBright;
+            Vector256<float> dBright;
+            if (Fma.IsSupported)
+            {
+                sBright = Fma.MultiplyAdd(ssB, bLuma,
+                    Fma.MultiplyAdd(ssG, gLuma,
+                        Avx2.Multiply(ssR, rLuma)
+                    )
+                );
+                dBright = Fma.MultiplyAdd(ddB, bLuma,
+                    Fma.MultiplyAdd(ddG, gLuma,
+                        Avx2.Multiply(ddR, rLuma)
+                    )
+                );
+            }
+            else
+            {
+                sBright = Avx2.Add(
+                    Avx2.Add(
+                        Avx2.Multiply(ssR, rLuma),
+                        Avx2.Multiply(ssG, gLuma)
+                    ),
+                    Avx2.Multiply(ssB, bLuma)
+                );
+                dBright = Avx2.Add(
+                    Avx2.Add(
+                        Avx2.Multiply(ddR, rLuma),
+                        Avx2.Multiply(ddG, gLuma)
+                    ),
+                    Avx2.Multiply(ddB, bLuma)
+                );
+            }
 
             var control = Avx2.CompareLessThan(sBright, dBright);
             var rrR = XMVectorSelect(ddR, ssR, control);
@@ -352,6 +390,14 @@ public static unsafe class BitmapBlend
         return r;
     }
 
+    /// <summary>
+    /// Overlay (Перекрытие)
+    /// R = (D < 0.5) ? 2 × S × D : 1 - 2 × (1 - S) × (1 - D)
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static RgbBitmap Overlay(RgbBitmap d, RgbBitmap s)
     {
         var pixelWidth = s.PixelWidth;
@@ -362,12 +408,12 @@ public static unsafe class BitmapBlend
             throw new ArgumentException("bitmap must have the same size");
         }
         var r = RgbBitmap.CreateUninitialized(pixelWidth, pixelHeight);
-        var pixelCount = s.PixelWidth * s.PixelHeight;
-        OverlayChannel(d.R.AsPointer(), s.R.AsPointer(), r.R.AsPointer(), pixelCount);
-        OverlayChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
-        OverlayChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
+        var pixelCount = s.PixelCount;
+        ProcessChannel(d.R.AsPointer(), s.R.AsPointer(), r.R.AsPointer(), pixelCount);
+        ProcessChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
+        ProcessChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
 
-        static void OverlayChannel(float* d, float* s, float* r, int pixelCount)
+        static void ProcessChannel(float* d, float* s, float* r, int pixelCount)
         {
             var half = Vector256.Create(0.5f);
             var one = Vector256.Create(1.0f);
@@ -379,6 +425,115 @@ public static unsafe class BitmapBlend
                 var dd = Avx2.LoadAlignedVector256(d + i);
                 var ss = Avx2.LoadAlignedVector256(s + i);
                 var mask = Avx2.CompareLessThanOrEqual(dd, half);
+                var lowBranch = Avx2.Multiply(Avx.Multiply(two, dd), ss);
+                var highBranch = Avx2.Subtract(one,
+                    Avx2.Multiply(two,
+                        Avx2.Multiply(Avx2.Subtract(one, dd), Avx2.Subtract(one, ss))
+                    )
+                );
+                var result = Avx2.BlendVariable(highBranch, lowBranch, mask);
+                result = Avx2.Max(zero, Avx.Min(one, result));
+                Avx2.StoreAlignedNonTemporal(r + i, result);
+            }
+        }
+        return r;
+    }
+
+    /// <summary>
+    /// Soft Light (Мягкий свет)
+    ///     R = (S < 0.5) ? D - (1 - 2×S) × D × (1 - D) : D + (2×S - 1) × (sqrt(D) - D)
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public static RgbBitmap SoftLight(RgbBitmap d, RgbBitmap s)
+    {
+        var pixelWidth = s.PixelWidth;
+        var pixelHeight = s.PixelHeight;
+
+        if (pixelWidth != d.PixelWidth || pixelHeight != d.PixelHeight)
+        {
+            throw new ArgumentException("bitmap must have the same size");
+        }
+        var r = RgbBitmap.CreateUninitialized(pixelWidth, pixelHeight);
+
+        var pixelCount = s.PixelCount;
+
+        ProcessChannel(d.R.AsPointer(), s.R.AsPointer(), r.R.AsPointer(), pixelCount);
+        ProcessChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
+        ProcessChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
+
+        static void ProcessChannel(float* d, float* s, float* r, int pixelCount)
+        {
+            var half = Vector256.Create(0.5f);
+            var one = Vector256.Create(1.0f);
+            var two = Vector256.Create(2.0f);
+            var zero = Vector256<float>.Zero;
+
+            for (var i = 0; i < pixelCount; i += 8)
+            {
+                var dd = Avx2.LoadAlignedVector256(d + i);
+                var ss = Avx2.LoadAlignedVector256(s + i);
+
+                var mask = Avx2.CompareLessThanOrEqual(ss, half);
+                // s < 0.5
+                var highBranch = Avx2.Subtract(dd,
+                    Avx2.Multiply(
+                        Avx2.Subtract(one, Avx2.Multiply(two, ss)),
+                        Avx2.Multiply(dd, Avx2.Subtract(one, dd))
+                    )
+                );
+                // s >= 0.5
+                var lowBranch = Avx2.Add(dd,
+                    Avx2.Multiply(
+                        Avx2.Subtract(Avx2.Multiply(two, ss), one),
+                        Avx2.Subtract(Avx2.Sqrt(dd), dd)
+                    )
+                );
+
+                var result = Avx2.BlendVariable(highBranch, lowBranch, mask);
+                result = Avx2.Max(zero, Avx.Min(one, result));
+                Avx2.StoreAlignedNonTemporal(r + i, result);
+            }
+        }
+        return r;
+    }
+
+    /// <summary>
+    /// Hard Light (Жесткий свет)
+    /// R = (S < 0.5) ? 2 × S × D : 1 - 2 × (1 - S) × (1 - D)
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static RgbBitmap HardLight(RgbBitmap d, RgbBitmap s)
+    {
+        var pixelWidth = s.PixelWidth;
+        var pixelHeight = s.PixelHeight;
+
+        if (pixelWidth != d.PixelWidth || pixelHeight != d.PixelHeight)
+        {
+            throw new ArgumentException("bitmap must have the same size");
+        }
+        var r = RgbBitmap.CreateUninitialized(pixelWidth, pixelHeight);
+        var pixelCount = s.PixelCount;
+        ProcessChannel(d.R.AsPointer(), s.R.AsPointer(), r.R.AsPointer(), pixelCount);
+        ProcessChannel(d.G.AsPointer(), s.G.AsPointer(), r.G.AsPointer(), pixelCount);
+        ProcessChannel(d.B.AsPointer(), s.B.AsPointer(), r.B.AsPointer(), pixelCount);
+
+        static void ProcessChannel(float* d, float* s, float* r, int pixelCount)
+        {
+            var half = Vector256.Create(0.5f);
+            var one = Vector256.Create(1.0f);
+            var two = Vector256.Create(2.0f);
+            var zero = Vector256<float>.Zero;
+
+            for (var i = 0; i < pixelCount; i += 8)
+            {
+                var dd = Avx2.LoadAlignedVector256(d + i);
+                var ss = Avx2.LoadAlignedVector256(s + i);
+                var mask = Avx2.CompareLessThanOrEqual(ss, half);
                 var lowBranch = Avx2.Multiply(Avx.Multiply(two, dd), ss);
                 var highBranch = Avx2.Subtract(one,
                     Avx2.Multiply(two,

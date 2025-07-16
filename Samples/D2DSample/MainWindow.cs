@@ -46,7 +46,7 @@ public partial class MainWindow : Form
             var bitmap3 = BitmapBlend.Difference(bitmap1, bitmap2);
             bitmap3._Log(MathF.E * 10);
             var bitmap4 = BitmapBlend.DarkerColor(bitmap3, bitmap1);
-            var bitmap5 = BitmapBlend.Overlay(bitmap1, bitmap4);
+            var bitmap5 = BitmapBlend.HardMix(bitmap4, bitmap1);
             //var bitmap6 = RgbBitmap.Create(16, 16, ColorF.FromRGBA(1, 1, 1, 0.5f));
             //string fileName = @"D:\Users\dykolchev.DYKBITS\Pictures\canon\2025_07_07\JPEG\3M6A7233.JPG";
             //bitmapF.Log();

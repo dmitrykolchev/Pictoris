@@ -432,7 +432,7 @@ public static unsafe class BitmapBlend
                     )
                 );
                 var result = Avx2.BlendVariable(highBranch, lowBranch, mask);
-                result = Avx2.Max(zero, Avx.Min(one, result));
+                result = Avx2.Min(one, Avx2.Max(zero, result));
                 Avx2.StoreAlignedNonTemporal(r + i, result);
             }
         }
@@ -492,7 +492,7 @@ public static unsafe class BitmapBlend
                 );
 
                 var result = Avx2.BlendVariable(highBranch, lowBranch, mask);
-                result = Avx2.Max(zero, Avx.Min(one, result));
+                result = Avx2.Min(one, Avx2.Max(zero, result));
                 Avx2.StoreAlignedNonTemporal(r + i, result);
             }
         }
@@ -541,11 +541,72 @@ public static unsafe class BitmapBlend
                     )
                 );
                 var result = Avx2.BlendVariable(highBranch, lowBranch, mask);
-                result = Avx2.Max(zero, Avx.Min(one, result));
+                result = Avx2.Min(one, Avx2.Max(zero, result));
                 Avx2.StoreAlignedNonTemporal(r + i, result);
             }
         }
         return r;
+    }
+
+    /// <summary>
+    /// Vivid Light (Яркий свет)
+    ///     R = (S < 0.5) ? 1 - (1 - D) / (2 × S) : D / (2 × (1 - S))
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static RgbBitmap VividLight(RgbBitmap d, RgbBitmap s)
+    {
+        return Blend(d, s, &ChannelBlend.VividLight);
+    }
+
+    /// <summary>
+    /// Linear Light (Линейный свет)
+    ///     R = D + 2 × S - 1
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public static RgbBitmap LinearLight(RgbBitmap d, RgbBitmap s)
+    {
+        return Blend(d, s, &ChannelBlend.LinearLight);
+    }
+
+    /// <summary>
+    /// Pin Light (Точечный свет)
+    ///     R = (S < 0.5) ? min(D, 2 × S) : max(D, 2 × S - 1)
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public static RgbBitmap PinLight(RgbBitmap d, RgbBitmap s)
+    {
+        return Blend(d, s, &ChannelBlend.PinLight);
+    }
+
+    /// <summary>
+    /// Hard Mix (Жесткое смешивание)
+    ///     R = (S + D < 1) ? 0 : 1
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    public static RgbBitmap HardMix(RgbBitmap d, RgbBitmap s)
+    {
+        return Blend(d, s, &ChannelBlend.HardMix);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static RgbBitmap Blend(RgbBitmap dst, RgbBitmap src, delegate* managed<Channel, Channel, Channel, void> blendFunc)
+    {
+        ArgumentNullException.ThrowIfNull(dst);
+        ArgumentNullException.ThrowIfNull(src);
+        var result = RgbBitmap.CreateUninitialized(dst.PixelWidth, dst.PixelHeight);
+        blendFunc(dst.R, src.R, result.R);
+        blendFunc(dst.G, src.G, result.G);
+        blendFunc(dst.B, src.B, result.B);
+        return result;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

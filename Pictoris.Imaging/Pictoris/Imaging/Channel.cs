@@ -24,17 +24,17 @@ public unsafe class Channel : IDisposable
     /// <param name="height">Height of the image channel</param>
     internal unsafe Channel(int width, int height)
     {
-        Width = width;
-        Height = height;
+        PixelWidth = width;
+        PixelHeight = height;
         var stepBytes = unchecked((int)(((sizeof(float) * width) + (Avx2Alignment - 1)) & ~(Avx2Alignment - 1)));
         _buffer = (float*)NativeMemory.AlignedAlloc((nuint)stepBytes * (nuint)height * sizeof(float), Avx2Alignment);
         _stepBytes = stepBytes;
         Length = _stepBytes / sizeof(float) * height;
     }
 
-    private unsafe Channel(Channel channel) : this(channel.Width, channel.Height)
+    private unsafe Channel(Channel channel) : this(channel.PixelWidth, channel.PixelHeight)
     {
-        IppiSize roiSize = new() { width = Width, height = Height };
+        IppiSize roiSize = new() { width = PixelWidth, height = PixelHeight };
         var status = ippiCopy_32f_C1R(channel._buffer, channel._stepBytes, _buffer, _stepBytes, roiSize);
     }
 
@@ -46,12 +46,12 @@ public unsafe class Channel : IDisposable
     /// <summary>
     /// Returns the channel width
     /// </summary>
-    public int Width { get; }
+    public int PixelWidth { get; }
 
     /// <summary>
     /// Returns the channel height
     /// </summary>
-    public int Height { get; }
+    public int PixelHeight { get; }
 
     /// <summary>
     /// Returns length of the buffer
